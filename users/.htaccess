@@ -1,0 +1,6 @@
+
+RewriteEngine On    # Turn on the rewriting engine
+RewriteRule ^login login.php [NC,L]
+RewriteRule ^signup signup.php [NC,L]
+RewriteRule ^getuser getUser.php [NC,L]
+
