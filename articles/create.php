@@ -76,7 +76,7 @@
     //echo($data);
     //echo($_POST['Title']);
     $items->Title = $data->Title;// $_POST['Title'];//$_POST["Title"]; 
-    $items->CreatorId = 1;
+    $items->CreatorId = $data->creatorId;
     $items->Category = 1;	
     $items->Text = $data->Text;//$_POST['Text'];//($_POST["Text"]);
     
