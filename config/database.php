@@ -1,7 +1,7 @@
 <?php
 class Database{
 	
-	private $host  = 'localhost';
+	private $host  = '10.102.70.135';
     private $user  = "gcc10_kqaraqe";
     private $password   = "N2c-v}fSq(,$";
     private $database  = "gcc10_BethlehemGov"; 

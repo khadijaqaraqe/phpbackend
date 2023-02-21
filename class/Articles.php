@@ -3,14 +3,23 @@ class Articles{
     
     private $itemsTable = "Articles";      
     public $id;
-    public $title;
-    public $creator;
-    public $text;
-    public $category_id;   
+    public $Title;
+    public $CreatorId;
+    public $Text;
+    public $Category;   
+	public $AltText;
+	public $Description;
     public $created; 
 	public $modified; 
+	public $image;
 	public $imagesID= array();
-    private $conn;
+	public $Path;
+
+	public $Type;
+	public $FirstRow;
+	public $LastRow;
+    public $imageId;
+	private $conn;
 	
     public function __construct($db){
         $this->conn = $db;
