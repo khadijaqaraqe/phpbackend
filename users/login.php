@@ -259,7 +259,7 @@ else:
 
                     $jwt = new JwtHandler();
                     $token = $jwt->jwtEncodeData(
-                        'http://10.102.70.135/php_auth_api/',
+                        'http://localhost/php_auth_api/',
                         array("user_id"=> $row['ID'])
                     );
                     

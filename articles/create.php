@@ -168,6 +168,7 @@
   } */ 
   foreach ($data->fileSource as $key => $value) {
     $image_parts = explode(";base64,", $value);
+    //echo $image_parts;
     $image_type_aux = explode("image/", $image_parts[0]);
     echo($image_type_aux[2]);
     $image_type = $image_type_aux[1];

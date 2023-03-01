@@ -6,6 +6,7 @@ class Articles{
     public $Title;
     public $CreatorId;
     public $Text;
+    public $articleId;
     public $Category;   
 	public $AltText;
 	public $Description;
@@ -84,7 +85,7 @@ class Articles{
 			(NULL, ?, ?, ?, ?);");		
 		$this->AltText = htmlspecialchars(strip_tags($this->AltText));
 		$this->CreatorId = htmlspecialchars(strip_tags($this->CreatorId));
-		$this->Path = $this->Path;
+		//$this->Path = $this->Path;
 		$this->Type = htmlspecialchars(strip_tags($this->Type));
 		
 		$stmt2->bind_param("siss", 
@@ -106,27 +107,27 @@ class Articles{
 	}
 						 
 	function create() {
-		$uuid = $this->conn->prepare("SELECT UUID();");
-		if($uuid->execute() === true) {
-			$uuid->store_result();
-			$uuid->bind_result($this->article_id);
-			$uuid->fetch();
+		$uuid = uniqid(date("Y").date("n").'0');//$this->conn->prepare("SELECT uniqid();");
+	//	if($uuid->execute() === true) {
+		//	$uuid->store_result();
+		//	$uuid->bind_result($this->article_id);
+		//	$uuid->fetch();
 			
 			
 			//$this->article_id = ($uuid->fetch_assoc())['UUID()'];
 
 			$stmt = $this->conn->prepare("INSERT INTO `Articles` (`ID`, `Category`, `CreatedDate`, `Creator`, `ModifiedDate`, `Text`, `Title`) VALUES 
 			(?, ?, NOW(), ?, NOW(), ?, ?);");
-			$this->ID =  $this->article_id;
+			$this->id =  $uuid;//$this->article_id;
 			$this->Category = htmlspecialchars(strip_tags($this->Category));
-			$this->Creator = htmlspecialchars(strip_tags($this->CreatorId));
+			$this->CreatorId = htmlspecialchars(strip_tags($this->CreatorId));
 			$this->Text = (strip_tags($this->Text));
-			$this->Title = $this->Title;
+			//$this->Title = $this->Title;
 
 			$stmt->bind_param("siiss", 
-			$this->ID,
+			$this->id,
 			$this->Category,
-			$this->Creator, 
+			$this->CreatorId, 
 			$this->Text,  
 			$this->Title); 
 			if($stmt->execute()===true) {
@@ -135,7 +136,7 @@ class Articles{
 					{
 						echo $key." has the value ". $value;
 					} */
-					$this->articleId = $this->article_id;
+					$this->articleId = $this->$uuid;
 					$this->Description = htmlspecialchars(strip_tags($this->Description));
 				foreach($this->imagesID as $key => $value)
 				{
@@ -150,7 +151,7 @@ class Articles{
 				 foreach($this->imagesID as $key => $value)
 					{
 						$valuesStmt .=  "( NULL, 
-							'".$this->articleId."', 
+							'".$uuid."', 
 							'". $value."', 	
 							'" .$this->Description."'), ";
 					};
@@ -179,8 +180,8 @@ class Articles{
 				/* }
 				return false; */
 			}
-			return false;	
-		} 
+			//return false;	
+		//} 
 		//$this->conn-> close();
 		return false;	 
 		
@@ -191,10 +192,10 @@ class Articles{
 		$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
 	 
 		$this->id = htmlspecialchars(strip_tags($this->id));
-		$this->title = htmlspecialchars(strip_tags($this->title));
-		$this->text = htmlspecialchars(strip_tags($this->text));
+		$this->Title = htmlspecialchars(strip_tags($this->Title));
+		$this->Text = htmlspecialchars(strip_tags($this->Text));
 		
-		$stmt->bind_param("sss", $this->title, $this->text, $this->id);
+		$stmt->bind_param("sss", $this->Title, $this->Text, $this->id);
 		
 		if($stmt->execute()){
 			return true;

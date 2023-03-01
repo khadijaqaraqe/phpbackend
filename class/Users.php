@@ -151,7 +151,7 @@ class Users{
             // select all query
             $query = 
                     "SELECT
-                        `ID`, `Username`, `Password`, `createdAt`, `FirstName`, `LastName`, `Email`, `PhoneNumber`, `DepartmentID`, `DateOfBirth`
+                        `ID`, `Username`, `createdAt`, `FirstName`, `LastName`, `Email`, `PhoneNumber`, `DepartmentID`, `DateOfBirth`
                     FROM
                     `Users`
                     WHERE
