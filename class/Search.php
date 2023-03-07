@@ -16,13 +16,20 @@ class Search{
 	
 	function searchArticles(){
         // $q -> bind_param("q", $this->q);
-        $data = json_decode(file_get_contents("php://input"));
+        $data = file_get_contents("php://input");
+        
+        if(empty($data) == 1){ $data = json_decode("{'query': 'بيت لحم'}"); } else {$data = json_decode(file_get_contents("php://input")); }///* file_get_contents("php://input") */ ? json_decode(file_get_contents("php://input")) : json_decode("{'query': 'بيت لحم'}");
+        
+        //echo(empty($data) == 1);
+       // echo("data");
+       
+       // echo($data);
         //$this->q -> $data->query;
         //$new_query -> $data->query;
-
-        $query = (isset($data->query)) ?  htmlspecialchars(strip_tags($data->query)) : "بيت لحم";
-        $this->q = $query;
-        $new_query =  (strlen($query) > 0) ? htmlspecialchars(strip_tags($data->query)) : "بيت لحم"; 
+       // $query = is_null($data) ? "بيت لحم" : htmlspecialchars(strip_tags($data->query));
+        $query = /* (isset($data)) ? */  htmlspecialchars(strip_tags($data->query))/*  : "بيت لحم" */;
+      //  $this->q = $query;
+        $new_query = $query;//htmlspecialchars(strip_tags($data->query)) ;// (strlen($query) > 0 /* && !is_null($data->query) */) ?  : "بيت لحم"; 
 		/* *
           SELECT Articles.ID, Articles.Title, Articles.Text, Articles.ModifiedDate, Articles.CreatedDate, Users.FirstName, Users.LastName, Types.Name, Images.Path, Images.Type, Images.image, Images.CreatedDate 
 		FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users
