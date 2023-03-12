@@ -13,12 +13,23 @@ include_once '../class/Search.php';
 
 $database = new Database();
 $db = $database->getConnection();
- 
+
 $items = new Search($db);
 
 $items->q = (isset($_GET['q']) && $_GET['q']) ? $_GET['q'] : '0';
 
-$result = $items->searchArticles($items->q);
+
+//if(!empty($data->Topic) && !empty($data->PhoneNumber) && !empty($data->ComplaintText) ){     }
+$data = file_get_contents("php://input");
+       
+ 
+
+$decoded_json = json_decode($data, false);
+
+if(!empty($decoded_json->query)){ 
+$query =  (isset($decoded_json->query)) ? htmlspecialchars(strip_tags($decoded_json->query)) : "بيت لحم" ;
+
+$result = $items->searchArticles($query);
 
 if($result->num_rows > 0){    
     $itemRecords=array();
@@ -29,8 +40,6 @@ if($result->num_rows > 0){
         $itemDetails=array(
             "q" => $items->q ,
             "id" => $item['ID'],
-            //"firstName" => $item['FirstName'],
-           // "lastName" => $item['LastName'],
             "title" => $item['Title'],
 			"text" => $item['Text'],
             "path" => $item['Path'],
@@ -49,4 +58,7 @@ if($result->num_rows > 0){
     echo json_encode(
         array("message" => "No article found." )
     );
+} }    else {    
+    http_response_code(404);    
+    echo json_encode(array("message" => "Cannot search for null values"));
 } 

@@ -6,6 +6,10 @@ class Directorates{
     public $title;
     public $creator;
     public $text;
+    public $Name; 
+    public $PhoneNumber;
+    Public $Email;
+    Public $UserId;
     public $category_id;   
     public $created; 
 	public $modified; 
@@ -25,21 +29,21 @@ class Directorates{
 	
 	function create() {
 	
-        $stmt = $this->conn->prepare("INSERT INTO Complaint (ID, Name, PhoneNumber, Topic, AssociationID, ComplaintText, ComplaintDate, Email, UserId) 
+        $stmt = $this->conn->prepare("INSERT INTO Directorates (ID, Name, PhoneNumber, Topic, AssociationID, ComplaintText, ComplaintDate, Email, UserId) 
         VALUES (NULL, ?, ?, ?, NULL, ?, NOW(), ?, ?);");
         
         $this->Name = htmlspecialchars(strip_tags($this->Name));
         $this->PhoneNumber = $this->PhoneNumber;
-        $this->Topic = htmlspecialchars(strip_tags($this->Topic));
-        $this->ComplaintText = $this->ComplaintText;
+        $this->created = htmlspecialchars(strip_tags($this->created));
+        $this->creator = $this->creator;
         $this->Email = $this->Email;
         $this->UserId = $this->UserId;
 
         $stmt->bind_param("sisssi", 
         $this->Name,
         $this->PhoneNumber,
-        $this->Topic, 
-        $this->ComplaintText,  
+        $this->creator, 
+        $this->creator,  
         $this->Email, 
         $this->UserId); 
         
