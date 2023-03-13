@@ -35,7 +35,7 @@ class Search{
                         OR Articles.Text LIKE '%".$new_query."%' 
                         OR Types.Description LIKE '%".$new_query."%' 
                         OR Types.Name LIKE '%".$new_query."%' )
-                    GROUP BY Articles.ID
+                    
                     ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC
                     LIMIT 200");
                 

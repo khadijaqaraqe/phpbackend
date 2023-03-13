@@ -14,7 +14,7 @@ class Tickers{
 		$stmt = $this->conn->prepare("SELECT Articles.ID, Articles.Title, Articles.Text 
 		FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users   
 		WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID 
-		GROUP BY Articles.ID
+		
 		ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC 
 		LIMIT 15;");
 		$stmt->execute();			

@@ -6,12 +6,12 @@
     header("Access-Control-Allow-Headers: Accept, Origin, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     
     require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-    include_once '../class/Directorates.php';
+    include_once '../class/Complaints.php';
     
     $database = new Database();
     $db = $database->getConnection();
     
-    $items = new Directorates($db);
+    $items = new Complaints($db);
     $data = json_decode(file_get_contents("php://input"));
 
     if(!empty($data->Topic) && !empty($data->PhoneNumber) && !empty($data->ComplaintText) ){     

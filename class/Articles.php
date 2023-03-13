@@ -37,7 +37,7 @@ class Articles{
 			$stmt = $this->conn->prepare("SELECT Articles.ID, Articles.Title, Articles.Text, Articles.ModifiedDate, Articles.CreatedDate, Users.FirstName, Users.LastName, Types.Name, Images.Path, Images.Type, Images.image, Images.CreatedDate 
 			FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users   
 			WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID 
-			GROUP BY Articles.ID
+			
 			ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC 
 			LIMIT 5;");		
 		}		
@@ -50,7 +50,7 @@ class Articles{
 		$stmt = $this->conn->prepare("SELECT Articles.ID, Articles.Title, Articles.Text, Articles.ModifiedDate, Articles.CreatedDate, Users.FirstName, Users.LastName, Types.Name, Images.Path, Images.Type, Images.image, Images.CreatedDate 
 		FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users   
 		WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID 
-		GROUP BY Articles.ID
+		
 		ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC 
 		LIMIT ?, ?;");		
 		$this->FirstRow = htmlspecialchars(strip_tags($this->FirstRow));
@@ -65,18 +65,18 @@ class Articles{
 		return $result;	
 	}
 
-	function readTickers() {	
+	/* function readTickers() {	
 		$stmt = $this->conn->prepare("SELECT Articles.ID, Articles.Title, Articles.Text 
 		FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users   
 		WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID 
-		GROUP BY Articles.ID
+		
 		ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC 
 		LIMIT 15;");
 		$stmt->execute();			
 		$result = $stmt->get_result();	
 		//$this->conn->close();	
 		return $result;	
-	}
+	} */
 
 
 	function createImages() {
