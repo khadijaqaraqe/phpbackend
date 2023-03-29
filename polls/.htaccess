@@ -1,0 +1,7 @@
+
+RewriteEngine On    # Turn on the rewriting engine
+RewriteRule ^read$ readPolls.php [NC,L]
+RewriteRule ^create$ create.php [NC,L]
+RewriteRule ^vote$ vote.php [NC,L]
+RewriteRule ^results$ results.php [NC,L]
+RewriteRule ^update$ update.php [NC,L]

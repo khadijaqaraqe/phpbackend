@@ -26,7 +26,7 @@ if($result->num_rows > 0){
             "Name" => $item['Name'],
             "PhoneNumber" => $item['PhoneNumber'],
             "Topic" => $item['Topic'],
-			"AssociationID" => $item['AssociationID'],
+			"Association" => $item['Association'],
             "ComplaintText" => $item['ComplaintText'],            
 			"ComplaintDate" => $item['ComplaintDate'],
             "Email" => $item['Email'],

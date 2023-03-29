@@ -89,6 +89,7 @@ function msg($success, $status, $message, $extra = [])
 
 // DATA FORM REQUEST
 $data = json_decode(file_get_contents("php://input"));
+
 $returnData = [];
 
 if ($_SERVER["REQUEST_METHOD"] != "POST") :
@@ -103,7 +104,7 @@ elseif (
     || empty(trim($data->email))
     || empty(trim($data->password))
 ) :
-
+    
     $fields = ['fields' => ['username', 'email', 'password']];
     $returnData = msg(0, 422, 'Please Fill in all Required Fields!', $fields);
 
@@ -127,7 +128,7 @@ else :
     elseif (strlen($name) < 3) :
         $returnData = msg(0, 422, 'Your name must be at least 3 characters long!');
 
-    elseif (strlen($phonenumber) != 10 ) :
+    elseif (strlen($phonenumber) >= 10 &&  strlen($phonenumber) <= 14) :
         $returnData = msg(0, 422, 'Your Phone number must be at least 10 characters long!');
     else :
         try {

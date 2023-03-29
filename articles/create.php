@@ -43,11 +43,11 @@
       
      // echo "You have CORS!";
     }
-    //  $data=file_get_contents('php://input');
+    // $data=file_get_contents('php://input');
     // $data = file_get_contents("php://input");
     // global $_POST_JSON;
     // print_r("datadatadatadatadatadatadatadatadatadata");
-    //   print_r($data);
+    // print_r($data);
     $items = new Articles($db);
     $folderPath = dirname(__DIR__,2)."/images/";
     $postData = file_get_contents("php://input");
@@ -170,7 +170,7 @@
     $image_parts = explode(";base64,", $value);
     //echo $image_parts;
     $image_type_aux = explode("image/", $image_parts[0]);
-    echo($image_type_aux[2]);
+    //echo($image_type_aux[2]);
     $image_type = $image_type_aux[1];
     $image_base64 = base64_decode($image_parts[1]);
     $file_name = uniqid() . '.'.'jpeg';

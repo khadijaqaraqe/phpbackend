@@ -62,7 +62,7 @@ class Users{
         
 		if($uuid->execute() === true) {
 			$uuid->store_result();
-			$uuid->bind_result($this->user_id);
+			//$uuid->bind_result($this->user_id);
 			$uuid->fetch();
 			
 			//$this->article_id = ($uuid->fetch_assoc())['UUID()'];
@@ -70,15 +70,15 @@ class Users{
             $stmt = $this->conn->prepare($query);
         
             // sanitize3
-            $this->id               =   $this->user_id;
+            //$this->id               =   $this->user_id;
             $this->username         =   htmlspecialchars(strip_tags($this->username));
             $this->password         =   htmlspecialchars(strip_tags($this->password));
             $this->email            =   htmlspecialchars(strip_tags($this->email));
             $this->FirstName        =   htmlspecialchars(strip_tags($this->FirstName));
             $this->LastName         =   htmlspecialchars(strip_tags($this->LastName));
-            $this->PhoneNumber      =   ($this->PhoneNumber);
+           // $this->PhoneNumber      =   ($this->PhoneNumber);
             $this->DateOfBirth      =   htmlspecialchars(strip_tags($this->DateOfBirth));
-            $this->DepartmentID     =   ($this->DepartmentID);
+           // $this->DepartmentID     =   ($this->DepartmentID);
            
             // bind values
 

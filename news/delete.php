@@ -1,8 +1,8 @@
 <?php
  	cors();
-
+    header("Content-Type: application/json; charset=UTF-8");
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-	include_once '../class/Articles.php';
+    include_once '../class/BreakNews.php';
 	function cors() {
     
 		// Allow from any origin
@@ -15,12 +15,11 @@
 			header("Content-Type: application/json");
 		}
 		
-		// Access-Control headers are received during OPTIONS requests
 		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 			
 			if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
 				// may also be using PUT, PATCH, HEAD etc
-				header("Access-Control-Allow-Methods: GET, OPTIONS, PUT");
+				header("Access-Control-Allow-Methods: GET, OPTIONS, PUT, POST");
 			
 			if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
 				header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
@@ -31,28 +30,21 @@
 
 	$database = new Database();
 	$db = $database->getConnection();
-	
-	$items = new Articles($db);
-	$data = json_decode(file_get_contents("php://input"));// (isset($_GET['DeleteArticleID']) && $_GET['DeleteArticleID']) ? $_GET['DeleteArticleID'] : "";
-	//$data = $_GET['DeleteArticleID'];// (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : "";//$_GET['id']//json_decode(file_get_contents("php://input"));
-//	print_r ("_GET['DeleteArticleID']");
-//	print_r ($_GET['DeleteArticleID']);
+	$BreakNews = new BreakNews;
+    $newsData = $BreakNews->deleteNews(json_decode(file_get_contents("php://input"), true));
+	$data = json_decode(file_get_contents("php://input"));
 
 	if(!empty($data->id )){ 
-		
-		$items->id = $data->id;
-		
-
-		if($items->delete()) {     
+		if($newsData) {     
 			http_response_code(200);   
-			echo json_encode(array("message" => "article was delete."));
+			echo json_encode(array("message" => "News was delete."));
 		} else {    
 			http_response_code(503);     
-			echo json_encode(array("message" => "Unable to delete articles."));
+			echo json_encode(array("message" => "Unable to delete news."));
 		}
 		
 	} else {
 		http_response_code(400);    
-		echo json_encode(array("message" => "Unable to delete articles. Data is incomplete."));
+		echo json_encode(array("message" => "Unable to delete news. Data is incomplete."));
 	}
   ?>

@@ -1,7 +1,7 @@
 <?php
-class Articles{   
+class EmpArticles{   
     
-    private $itemsTable = "Articles";      
+    private $Table = "Articles";      
     public $id;
     public $Title;
     public $CreatorId;
@@ -36,8 +36,7 @@ class Articles{
 		} else {
 			$stmt = $this->conn->prepare("SELECT Articles.ID, Articles.Title, Articles.Text, Articles.ModifiedDate, Articles.CreatedDate, Users.FirstName, Users.LastName, Types.Name, Images.Path, Images.Type, Images.image, Images.CreatedDate 
 			FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users   
-			WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID 
-			
+			WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID
 			ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC 
 			LIMIT 5;");		
 		}		
@@ -46,7 +45,7 @@ class Articles{
 		return $result;	
 	}
 
-	function GetFirst25(){	
+	function GetFirst10(){	
 		$stmt = $this->conn->prepare("SELECT Articles.ID, Articles.Title, Articles.Text, Articles.ModifiedDate, Articles.CreatedDate, Users.FirstName, Users.LastName, Types.Name, Images.Path, Images.Type, Images.image, Images.CreatedDate 
 		FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users   
 		WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID 
@@ -65,18 +64,7 @@ class Articles{
 		return $result;	
 	}
 
-	/* function readTickers() {	
-		$stmt = $this->conn->prepare("SELECT Articles.ID, Articles.Title, Articles.Text 
-		FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types, Users   
-		WHERE Articles.Category = Types.ID AND Articles.Creator = Users.ID 
-		
-		ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC 
-		LIMIT 15;");
-		$stmt->execute();			
-		$result = $stmt->get_result();	
-		//$this->conn->close();	
-		return $result;	
-	} */
+	
 
 
 	function createImages() {
@@ -107,22 +95,14 @@ class Articles{
 	}
 						 
 	function create() {
-		$uuid = uniqid(date("Y").date("n").'0');//$this->conn->prepare("SELECT uniqid();");
-	//	if($uuid->execute() === true) {
-		//	$uuid->store_result();
-		//	$uuid->bind_result($this->article_id);
-		//	$uuid->fetch();
-			
-			
-			//$this->article_id = ($uuid->fetch_assoc())['UUID()'];
-
+		$uuid = uniqid(date("Y").date("n").'0');
+	
 			$stmt = $this->conn->prepare("INSERT INTO `Articles` (`ID`, `Category`, `CreatedDate`, `Creator`, `ModifiedDate`, `Text`, `Title`) VALUES 
 			(?, ?, NOW(), ?, NOW(), ?, ?);");
 			$this->id =  $uuid;//$this->article_id;
 			$this->Category = htmlspecialchars(strip_tags($this->Category));
 			$this->CreatorId = htmlspecialchars(strip_tags($this->CreatorId));
 			$this->Text = (strip_tags($this->Text));
-			//$this->Title = $this->Title;
 
 			$stmt->bind_param("siiss", 
 			$this->id,
@@ -132,18 +112,11 @@ class Articles{
 			$this->Title); 
 			if($stmt->execute()===true) {
 				
-					/* foreach($this->imagesID as $key => $value)
-					{
-						echo $key." has the value ". $value;
-					} */
-					//$this->articleId = $this->$uuid;
-					$this->Description = htmlspecialchars(strip_tags($this->Description));
+                $this->articleId = $this->$uuid;
+                $this->Description = htmlspecialchars(strip_tags($this->Description));
 				foreach($this->imagesID as $key => $value)
 				{
-					//echo $key." has the value ". $value;
 					
-
-					//	echo $value;
 				$statement = "INSERT INTO `ArticlesImages` 
 				(`id`, `articleId`, `imageId`, `Description`) 
 				VALUES ";
@@ -158,31 +131,16 @@ class Articles{
 					$updatedValue = substr($valuesStmt, 0, -2);
 					$stmt3 = $this->conn->prepare($statement.$updatedValue.";");
 					
-					/* "INSERT INTO `ArticlesImages` (`id`, `articleId`, `imageId`, `Description`) VALUES 
-
-						(NULL, ?, ?, ?)"); */
-
 					
-					/* $this->imageId = $value;
-					
-			
-					$stmt3->bind_param( "sss", 
-						$this->articleId,
-						$this->imageId,
-						$this->Description
-					); */
 					if($stmt3->execute()){
 						return true; 
 					}
 					return false;
-				  }
+				}
 					
-				/* }
-				return false; */
+			
 			}
-			//return false;	
-		//} 
-		//$this->conn-> close();
+			
 		return false;	 
 		
 	}
@@ -205,10 +163,7 @@ class Articles{
 	}
 	
 	function delete(){
-		//cd1fc45c-8756-11ed-97ea-dc4a3e462f29
-		//DELETE FROM articlesimages WHERE `articlesimages`.`id` = 311"
-		//DELETE FROM articles WHERE `articles`.`ID` = 'a44adb56-8746-11ed-97ea-dc4a3e462f29'
-		//DELETE FROM articlesimages WHERE `articlesimages`.`articleId` = 'cd1fc45c-8756-11ed-97ea-dc4a3e462f29'
+		
 		$stmt = $this->conn->prepare("DELETE FROM ArticlesImages WHERE `ArticlesImages`.`articleId` = ?");
 			
 		$this->id = htmlspecialchars(strip_tags($this->id));
@@ -218,8 +173,6 @@ class Articles{
 		if($stmt->execute()){
 			$stmt2 = $this->conn->prepare("DELETE FROM Articles WHERE `Articles`.`ID` = ?");
 			
-			//$this->id = htmlspecialchars(strip_tags($this->id));
-		
 			$stmt2->bind_param("s", $this->id);
 
 			if ($stmt2->execute()) {

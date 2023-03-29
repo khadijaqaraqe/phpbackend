@@ -18,7 +18,7 @@ function cors() {
 		header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
 		header('Access-Control-Allow-Credentials: true');
 		header('Access-Control-Max-Age: 86400');    // cache for 1 day
-		header("Content-Type: application/json");
+		header("Content-Type: application/json; charset=UTF-8");
 	}
 	
 	// Access-Control headers are received during OPTIONS requests
@@ -46,17 +46,14 @@ $data = json_decode(file_get_contents("php://input"));
 if(!empty($data->id) && !empty($data->Title) && 
 !empty($data->Text)){ 
 	
-	$items->id = $data->id; 
-	
-    $items->title = $data->Title;
-    $items->text = $data->Text;
-  
-	
+	$items->id = $data->id;
+    $items->Title = $data->Title;
+    $items->Text = $data->Text;
 	
 	if($items->update()){     
 		http_response_code(200);   
 		echo json_encode(array("message" => "article was updated."));
-	}else{    
+	} else {    
 		http_response_code(503);     
 		echo json_encode(array("message" => "Unable to update articles."));
 	}
