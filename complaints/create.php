@@ -65,31 +65,31 @@
         $items->Email = $data->Email;
         $items->UserId = $data->UserId;	
         $items->Association = $data->Association;
-
-        foreach ($data->fileSource as $key => $value) {
-            $image_parts = explode(";base64,", $value);
-            //echo $image_parts;
-            $image_type_aux = explode("image/", $image_parts[0]);
-            //echo($image_type_aux[2]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
-            $file_name = uniqid() . '.'.'jpeg';
-            $file = $folderPath . $file_name;
-            $items->Path = "attachments/".$file_name; 
-            $items->Type = "image/jpeg";
-        
-            if( $image_type != "jpg" && $image_type != "png" && $image_type != "jpeg"  && $image_type != "gif" ) {
-              echo json_encode(array("message" => "Sorry, only JPG, JPEG, PNG & GIF files are allowed."));
-            } else {
-              file_put_contents($file, $image_base64);
-              if ($items->createAttachments()){
-                // echo "Image was added.";
-               } else {
-                // echo "Unable to add image.";
-               }
+        if ($data->fileSource) {
+            foreach ($data->fileSource as $key => $value) {
+                $image_parts = explode(";base64,", $value);
+                //echo $image_parts;
+                $image_type_aux = explode("image/", $image_parts[0]);
+                //echo($image_type_aux[2]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $file_name = uniqid() . '.'.'jpeg';
+                $file = $folderPath . $file_name;
+                $items->Path = "attachments/".$file_name; 
+                $items->Type = "image/jpeg";
+            
+                if( $image_type != "jpg" && $image_type != "png" && $image_type != "jpeg"  && $image_type != "gif" ) {
+                    echo json_encode(array("message" => "Sorry, only JPG, JPEG, PNG & GIF files are allowed."));
+                } else {
+                    file_put_contents($file, $image_base64);
+                    if ($items->createAttachments()){
+                        // echo "Image was added.";
+                    } else {
+                        // echo "Unable to add image.";
+                    }
+                }
             }
-          }
-       
+        }
         if($items->create()) {         
             http_response_code(200);          
             echo json_encode(array("message" => "Complaint was added."));

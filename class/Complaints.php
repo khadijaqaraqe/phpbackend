@@ -74,30 +74,32 @@ class Complaints{
         if($stmt->execute()===true) {	
            
             $this->id =  $stmt->insert_id;
-            
-            foreach($this->attachmentID as $key => $value)
-            {
-                
-                $statement = "INSERT INTO `ComplaintAttachments` 
-                (`id`, `compID`, `attachId`) 
-                VALUES ";
-                $valuesStmt = "";
+            if ($this->attachmentID) {
                 foreach($this->attachmentID as $key => $value)
                 {
-                    $valuesStmt .=  "( NULL, 
-                        '".$this->id."', 
-                        '". $value."'), ";
-                };
-                $updatedValue = substr($valuesStmt, 0, -2);
-                $stmt3 = $this->conn->prepare($statement.$updatedValue.";");
-                
-                if($stmt3->execute()){
-                    return true; 
+                    
+                    $statement = "INSERT INTO `ComplaintAttachments` 
+                    (`id`, `compID`, `attachId`) 
+                    VALUES ";
+                    $valuesStmt = "";
+                    foreach($this->attachmentID as $key => $value)
+                    {
+                        $valuesStmt .=  "( NULL, 
+                            '".$this->id."', 
+                            '". $value."'), ";
+                    };
+                    $updatedValue = substr($valuesStmt, 0, -2);
+                    $stmt3 = $this->conn->prepare($statement.$updatedValue.";");
+                    
+                    if($stmt3->execute()){
+                        return true; 
+                    }
+                    return false;
                 }
-                return false;
+            } else { 
+                return true;}
+            
             }
-         
-        }
         return false;	
 	}
 		
