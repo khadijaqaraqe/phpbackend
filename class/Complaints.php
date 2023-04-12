@@ -58,18 +58,19 @@ class Complaints{
 	function create() {
         $stmt = $this->conn->prepare("INSERT INTO Complaint (ID, Name, PhoneNumber, Topic, Association, ComplaintText, ComplaintDate, Email, UserId) 
         VALUES (NULL, ?, ?, ?, ?, ?, NOW(), ?, ?);");
-        
+       
         $this->Name = htmlspecialchars(strip_tags($this->Name));
         $this->Topic = htmlspecialchars(strip_tags($this->Topic));
-        
+        $this->ComplaintText = htmlspecialchars(strip_tags($this->ComplaintText));
+
         $stmt->bind_param("sissssi", 
-        $this->Name,
-        $this->PhoneNumber,
-        $this->Topic, 
-        $this->Association,
-        $this->ComplaintText,  
-        $this->Email, 
-        $this->UserId); 
+            $this->Name,
+            $this->PhoneNumber,
+            $this->Topic, 
+            $this->Association,
+            $this->ComplaintText,  
+            $this->Email, 
+            $this->UserId); 
         
         if($stmt->execute()===true) {	
            

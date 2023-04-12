@@ -23,7 +23,7 @@ function cors() {
   }
 
 $BreakNews = new BreakNews;
-$newsData = $BreakNews->getNews();
+$newsData = $BreakNews->getOneNews(json_decode(file_get_contents("php://input"), true));
 
 if ($newsData) {
 

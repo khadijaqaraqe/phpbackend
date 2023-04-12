@@ -1,0 +1,9 @@
+Header set Access-Control-Allow-Origin "*"
+RewriteEngine On    # Turn on the rewriting engine
+RewriteRule ^read$ read.php [NC,L]
+RewriteRule ^read/([0-9_-]*)$ read.php?id=$1 [NC,L]
+RewriteRule ^readAll$ readAll.php [NC,L]
+RewriteRule ^readAll$ readAll.php?FirstRow=$1 [NC,L] &LastRow=$2 [NC,L]
+RewriteRule ^create$ create.php [NC,L]
+RewriteRule ^update$ update.php?id=$1 [NC,L]
+RewriteRule ^delete$ delete.php?id=$1 [NC,L]

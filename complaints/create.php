@@ -64,7 +64,9 @@
         $items->ComplaintText = $data->ComplaintText;
         $items->Email = $data->Email;
         $items->UserId = $data->UserId;	
-        $items->Association = $data->Association;
+        $items->Association = ($data->Association ==='others') ? htmlspecialchars(strip_tags($data->ComplaintAssociation)) : htmlspecialchars(strip_tags($data->Association));
+        //$items->Association = $data->Association;
+        //$items->ComplaintAssociation = $data->ComplaintAssociation;
         if ($data->fileSource) {
             foreach ($data->fileSource as $key => $value) {
                 $image_parts = explode(";base64,", $value);
