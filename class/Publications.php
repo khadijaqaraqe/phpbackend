@@ -7,7 +7,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 class Publications {
-
+    public $id;  
     public $Creator;  
     public $Title;
     public $attachmentID= array();
@@ -64,25 +64,25 @@ class Publications {
      * Get news result
      * @param news ID
      */
-   /*  public function getNews() {
+     public function getReports() {
         $resultData = array();
-            $sql = "SELECT * FROM `".$this->newsTbl."` ORDER BY `".$this->newsTbl."`.modified DESC, `".$this->newsTbl."`.created DESC;";
-            $newsResult = $this->getQuery($sql);
+            $sql = "SELECT * FROM `".$this->reportsTbl."` ORDER BY `".$this->reportsTbl."`.modified DESC, `".$this->reportsTbl."`.created DESC;";
+            $reportsResult = $this->getQuery($sql);
           
-        return $newsResult;//!empty($resultData)?$resultData:false;
-    } */
+        return $reportsResult;//!empty($resultData)?$resultData:false;
+    } 
 /*
-     * Get news result
-     * @param news ID
+     * Get report result
+     * @param report ID
      */
-   /*  public function getOneNews($data = array()) {
+     public function getOneReport($data) {
         
-        $sql = "SELECT * FROM `".$this->newsTbl."` WHERE `".$this->newsTbl."`.`id` = ".$data['id'].";";
+        $sql = "SELECT * FROM `".$this->reportsTbl."` WHERE `".$this->reportsTbl."`.`id` = ".$data.";";
            
-            $newsResult = $this->getQuery($sql);
+            $reportResult = $this->getQuery($sql);
           
-        return $newsResult;//!empty($resultData)?$resultData:false;
-    } */
+        return $reportResult; //!empty($resultData)?$resultData:false;
+    } 
 
     /*
      * create news
