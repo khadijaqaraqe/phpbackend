@@ -29,7 +29,6 @@ if($result->num_rows > 0){
             "title" => $item['Title'],
 			"text" => $item['Text'],
             "path" => $item['Path'],
-            //"image" => $item['image'],
             "category" => $item['Name'],            
 			"created" => $item['CreatedDate'],
             "modified" => $item['ModifiedDate']		

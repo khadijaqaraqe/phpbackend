@@ -2,7 +2,7 @@
 cors();
 header("Content-Type: application/json; charset=UTF-8");
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/BreakNews.php';
+include_once '../../class/Publications.php';
 function cors() { 
   if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -20,15 +20,15 @@ function cors() {
   }
 }
 
-$BreakNews = new BreakNews;
-$newsData = $BreakNews->updateNews(json_decode(file_get_contents("php://input"), true));
+$Publications = new Publications;
+$reportData = $Publications->updateReport(json_decode(file_get_contents("php://input"), true));
  
-if($newsData) {         
+if($reportData) {         
     http_response_code(200);          
-    echo json_encode(array("message" => "News was updated."));
+    echo json_encode(array("message" => "Report was updated."));
   } else {         
     http_response_code(503);        
-    echo json_encode(array("message" => "Unable to update news."));
+    echo json_encode(array("message" => "Unable to update report."));
   } 
 
 ?>

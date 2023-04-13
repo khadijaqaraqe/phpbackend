@@ -21,7 +21,8 @@ class Publications {
     private $dbName  = 'gcc10_BethlehemGov';             
     private $db      = false;
     private $reportsTbl = 'Reports';
-    
+    private $plansTbl = 'Plan';
+    private $magazineTbl = 'Magazine';
     public function __construct(){
         if(!$this->db){ 
             // Connect to the database
@@ -59,10 +60,14 @@ class Publications {
         }
         return !empty($data)?$data:false;
     }
-    
     /*
-     * Get news result
-     * @param news ID
+     * REPORT QUERIES 
+     * 
+     */
+
+    /*
+     * Get reports result
+     * 
      */
      public function getReports() {
         $resultData = array();
@@ -71,8 +76,9 @@ class Publications {
           
         return $reportsResult;//!empty($resultData)?$resultData:false;
     } 
-/*
-     * Get report result
+
+    /*
+     * Get report result - one report
      * @param report ID
      */
      public function getOneReport($data) {
@@ -85,8 +91,8 @@ class Publications {
     } 
 
     /*
-     * create news
-     * @data news subject and options (accepted three options)
+     * create report
+     * @data report subject and options (accepted three options)
      */
     public function createReport($data = array()){
 
@@ -102,12 +108,12 @@ class Publications {
     }
 
      /*
-     * update news 
-     * @data news subject and options (accepted three options)
+     * update report 
+     * @data report subject and options (accepted three options)
      */
-   /*  public function updateNews($data = array()){
+     public function updateReport($data = array()){
         try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
-           $query = "UPDATE ".$this->newsTbl." SET `Text` =  '".htmlspecialchars(strip_tags($data['Text']))."' WHERE ".$this->newsTbl.".`id` = ".$data['id'].";";
+           $query = "UPDATE ".$this->reportsTbl." SET `Title` =  '".htmlspecialchars(strip_tags($data['Title']))."' WHERE ".$this->reportsTbl.".`id` = ".$data['id'].";";
            $update = $this->db->query($query);
           
            return true;
@@ -115,13 +121,13 @@ class Publications {
        } catch (mysqli_sql_exception $e) { 
            var_dump($e);
        } 
-   } */
+   } 
 
-   //DELETE FROM news WHERE `news`.`id` = 10
-/* 
-   public function deleteNews($data = array()){
+   //DELETE FROM report WHERE `report`.`id` = 10
+
+   public function deleteReport($data = array()){
         try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
-            $query = "DELETE FROM " .$this->newsTbl. " WHERE `".$this->newsTbl."`.`id` =".htmlspecialchars(strip_tags($data['id'])).";";
+            $query = "DELETE FROM " .$this->reportsTbl. " WHERE `".$this->reportsTbl."`.`id` =".htmlspecialchars(strip_tags($data['id'])).";";
             $delete = $this->db->query($query);
             
             return true;
@@ -129,7 +135,159 @@ class Publications {
         } catch (mysqli_sql_exception $e) { 
             var_dump($e);
         } 
-    } */
+    } 
+
+    /*
+     * PLAN QUERIES 
+     * 
+     */
+
+    /*
+     * Get plan result
+     * 
+     */
+    public function getPlan() {
+        $resultData = array();
+            $sql = "SELECT * FROM `".$this->plansTbl."` ORDER BY `".$this->plansTbl."`.modified DESC, `".$this->plansTbl."`.created DESC;";
+            $reportsResult = $this->getQuery($sql);
+          
+        return $reportsResult;//!empty($resultData)?$resultData:false;
+    } 
+    /*
+     * Get report result - one report
+     * @param report ID
+     */
+     public function getOnePlan($data) {
+        
+        $sql = "SELECT * FROM `".$this->plansTbl."` WHERE `".$this->plansTbl."`.`id` = ".$data.";";
+           
+            $reportResult = $this->getQuery($sql);
+          
+        return $reportResult; //!empty($resultData)?$resultData:false;
+    } 
+
+    /*
+     * create report
+     * @data report subject and options (accepted three options)
+     */
+    public function createPlan($data = array()){
+
+         try { 
+            $query = "INSERT INTO `".$this->plansTbl."` (`id`, `Title`, `Path`, `Creator`) VALUES (null, '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $insert = $this->db->query($query);
+            
+            return true;
+
+        } catch (mysqli_sql_exception $e) { 
+            var_dump($e);
+        }  
+    }
+
+     /*
+     * update report 
+     * @data report subject and options (accepted three options)
+     */
+     public function updatePlan($data = array()){
+        try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
+           $query = "UPDATE ".$this->plansTbl." SET `Title` =  '".htmlspecialchars(strip_tags($data['Title']))."' WHERE ".$this->plansTbl.".`id` = ".$data['id'].";";
+           $update = $this->db->query($query);
+          
+           return true;
+
+       } catch (mysqli_sql_exception $e) { 
+           var_dump($e);
+       } 
+   } 
+
+   //DELETE FROM report WHERE `report`.`id` = 10
+
+   public function deletePlan($data = array()){
+        try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
+            $query = "DELETE FROM " .$this->plansTbl. " WHERE `".$this->plansTbl."`.`id` =".htmlspecialchars(strip_tags($data['id'])).";";
+            $delete = $this->db->query($query);
+            
+            return true;
+
+        } catch (mysqli_sql_exception $e) { 
+            var_dump($e);
+        } 
+    } 
+
+    /*
+     * MAGAZINE QUERIES 
+     * 
+     */
+
+    /*
+     * Get reports result
+     * 
+     */
+    public function getMagazine() {
+        $resultData = array();
+            $sql = "SELECT * FROM `".$this->magazineTbl."` ORDER BY `".$this->magazineTbl."`.modified DESC, `".$this->magazineTbl."`.created DESC;";
+            $reportsResult = $this->getQuery($sql);
+          
+        return $reportsResult;//!empty($resultData)?$resultData:false;
+    } 
+    /*
+     * Get report result - one report
+     * @param report ID
+     */
+     public function getOneMagazine($data) {
+        
+        $sql = "SELECT * FROM `".$this->magazineTbl."` WHERE `".$this->magazineTbl."`.`id` = ".$data.";";
+           
+            $reportResult = $this->getQuery($sql);
+          
+        return $reportResult; //!empty($resultData)?$resultData:false;
+    } 
+
+    /*
+     * create report
+     * @data report subject and options (accepted three options)
+     */
+    public function createMagazine($data = array()){
+
+         try { 
+            $query = "INSERT INTO `".$this->magazineTbl."` (`id`, `Title`, `Path`, `Creator`) VALUES (null, '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $insert = $this->db->query($query);
+            
+            return true;
+
+        } catch (mysqli_sql_exception $e) { 
+            var_dump($e);
+        }  
+    }
+
+     /*
+     * update report 
+     * @data report subject and options (accepted three options)
+     */
+     public function updateMagazine($data = array()){
+        try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
+           $query = "UPDATE ".$this->magazineTbl." SET `Title` =  '".htmlspecialchars(strip_tags($data['Title']))."' WHERE ".$this->magazineTbl.".`id` = ".$data['id'].";";
+           $update = $this->db->query($query);
+          
+           return true;
+
+       } catch (mysqli_sql_exception $e) { 
+           var_dump($e);
+       } 
+   } 
+
+   //DELETE FROM report WHERE `report`.`id` = 10
+
+   public function deleteMagazine($data = array()){
+        try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
+            $query = "DELETE FROM " .$this->magazineTbl. " WHERE `".$this->magazineTbl."`.`id` =".htmlspecialchars(strip_tags($data['id'])).";";
+            $delete = $this->db->query($query);
+            
+            return true;
+
+        } catch (mysqli_sql_exception $e) { 
+            var_dump($e);
+        } 
+    } 
 
 }
 ?>

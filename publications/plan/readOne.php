@@ -4,6 +4,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
 include_once '../../class/Publications.php';
+
 function cors() { 
     if (isset($_SERVER['HTTP_ORIGIN'])) {
       header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -22,32 +23,17 @@ function cors() {
   }
 
 $Publications = new Publications;
-$magazineData = $Publications->getMagazine();
-
-
- if ($magazineData) {
-    $itemRecords["magazines"]=array();
-
-    foreach ($magazineData as $value) {
-     
-    $itemDetails=array(
-      "id" => $value['id'],
-      "Title" => $value['Title'],
-      "Path" => $value['path'],
-      "Creator" => $value['Creator'],
-      "created" => $value['created'],
-      "modified" => $value['modified']
-    ); 
-    array_push($itemRecords["magazines"], $itemDetails);
-  }
-
-    echo json_encode($itemRecords);
-
+ 
+$plan = new Publications();
+$plan->id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : "";
+$planData = $Publications->getOnePlan($plan->id);
+if ($planData) {
+    echo json_encode($planData);
     http_response_code(200);  
-  } else {     
-      http_response_code(404);     
-      echo json_encode(
-          array("message" => "No magazine found.")
-      );
-  } 
+} else {     
+    http_response_code(404);     
+    echo json_encode(
+        array("message" => "No plan found.")
+    );
+} 
 ?>

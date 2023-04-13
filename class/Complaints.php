@@ -23,9 +23,17 @@ class Complaints{
     public function __construct($db){
         $this->conn = $db;
     }	
-	
+	function readOne($data){	
+		$stmt = $this->conn->prepare(
+            "SELECT  Complaint.ID, Complaint.Name, Complaint.PhoneNumber, Complaint.Topic, Complaint.Association, Complaint.ComplaintText, Complaint.ComplaintDate, Complaint.Email, Complaint.UserId,  Attachments.path, Attachments.created, Attachments.type, Attachments.modified
+			FROM (Complaint  JOIN ComplaintAttachments ON ComplaintAttachments.compId = Complaint.ID JOIN Attachments ON ComplaintAttachments.attachId = Attachments.id)  
+			WHERE Complaint.ID = '".$data->id."'");
+		$stmt->execute();			
+		$result = $stmt->get_result();		
+		return $result;	
+	}
+
 	function read(){	
-		
 		$stmt = $this->conn->prepare("SELECT ID, Name, PhoneNumber, Topic, Association, ComplaintText, ComplaintDate, Email, UserId FROM Complaint;");		
 		$stmt->execute();			
 		$result = $stmt->get_result();		
