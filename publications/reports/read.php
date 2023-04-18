@@ -73,7 +73,7 @@ if($reportData) {
   } else {     
       http_response_code(404);     
       echo json_encode(
-          array("message" => "No report found.")
+          array("message" => "No report found." , 'reports' =>[])
       );
   } 
 ?>

@@ -42,7 +42,7 @@ $planData = $Publications->getPlan();
   } else {     
       http_response_code(404);     
       echo json_encode(
-          array("message" => "No plan found.")
+          array("message" => "No plan found.", 'plans' =>[])
       );
   } 
 ?>
