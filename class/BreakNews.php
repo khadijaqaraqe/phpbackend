@@ -14,7 +14,7 @@ class BreakNews{
     private $dbName  = 'gcc10_BethlehemGov';             
     private $db      = false;
     private $newsTbl = 'News';
-    
+    private $articlesTbl = 'Articles';
     public function __construct(){
         if(!$this->db){ 
             // Connect to the database
@@ -58,8 +58,26 @@ class BreakNews{
      * @param news ID
      */
     public function getNews() {
-        $resultData = array();
-            $sql = "SELECT * FROM `".$this->newsTbl."` ORDER BY `".$this->newsTbl."`.modified DESC, `".$this->newsTbl."`.created DESC;";
+       // $resultData = array();
+            $sql = "SELECT `".$this->newsTbl."`.`id` AS ID,  `".$this->newsTbl."`.`Text` AS Text, `".$this->newsTbl."`.`Creator`, `".$this->newsTbl."`.`modified` as Modified,  `".$this->newsTbl."`.`created` as Created 
+            FROM `".$this->newsTbl."`
+            UNION 
+            SELECT `".$this->articlesTbl."`.`ID` AS ID ,`".$this->articlesTbl."`.`Title` AS Text,`".$this->articlesTbl."`.`Creator`, `".$this->articlesTbl."`.`ModifiedDate` as Modified , `".$this->articlesTbl."`.`CreatedDate`as Created
+            FROM `".$this->articlesTbl."`
+            ORDER BY Modified DESC, Created DESC;";
+            $newsResult = $this->getQuery($sql);
+           /*  if(!empty($newsResult)){
+                $resultData['Text'] = $newsResult['Text'];
+                return $resultData;
+            } */
+        return $newsResult;//!empty($resultData)?$resultData:false;
+    }
+
+    public function getBreakNews() {
+       // $resultData = array();
+            $sql = "SELECT * 
+            FROM `".$this->newsTbl."`
+            ORDER BY modified DESC, created DESC;";
             $newsResult = $this->getQuery($sql);
            /*  if(!empty($newsResult)){
                 $resultData['Text'] = $newsResult['Text'];
