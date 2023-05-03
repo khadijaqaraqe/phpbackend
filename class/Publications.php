@@ -97,7 +97,7 @@ class Publications {
     public function createReport($data = array()){
 
          try { 
-            $query = "INSERT INTO `".$this->reportsTbl."` (`id`, `Title`, `Path`, `Creator`) VALUES (null, '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $query = "INSERT INTO `".$this->reportsTbl."` ( `Title`, `Path`, `Creator`) VALUES ('".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
             
             return true;
@@ -173,7 +173,7 @@ class Publications {
     public function createPlan($data = array()){
 
          try { 
-            $query = "INSERT INTO `".$this->plansTbl."` (`id`, `Title`, `Path`, `Creator`) VALUES (null, '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $query = "INSERT INTO `".$this->plansTbl."` (`Title`, `Path`, `Creator`) VALUES ( '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
             
             return true;
@@ -249,7 +249,7 @@ class Publications {
     public function createMagazine($data = array()){
 
          try { 
-            $query = "INSERT INTO `".$this->magazineTbl."` (`id`, `Title`, `Path`, `Creator`) VALUES (null, '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $query = "INSERT INTO `".$this->magazineTbl."` (`Title`, `Path`, `Creator`) VALUES ( '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
             
             return true;

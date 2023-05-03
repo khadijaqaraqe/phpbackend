@@ -66,7 +66,7 @@ class Poll{
         $pollResult = $this->getQuery($sql, $pollType);
         if(!empty($pollResult)){
             if($pollType == 'single'){
-                $pollData['poll'] = $pollResult;
+                $pollData['poll'] = [$pollResult];
                 $sql2 = "SELECT * FROM ".$this->optTbl." WHERE poll_id = ".$pollResult['id']." AND status = '1'";
                 $optionResult = $this->getQuery($sql2);
                 $pollData['options'] = $optionResult;
@@ -110,9 +110,12 @@ class Poll{
      */
     public function getResult($pollID){
         $resultData = array();
+       
         if(!empty($pollID)){
-            $sql = "SELECT p.subject, SUM(v.vote_count) as total_votes FROM ".$this->voteTbl." as v LEFT JOIN ".$this->pollTbl." as p ON p.id = v.poll_id WHERE poll_id = ".$pollID;
+            $sql = "SELECT p.subject, SUM(v.vote_count) as total_votes FROM `".$this->voteTbl."` as v LEFT JOIN `".$this->pollTbl."` as p ON p.id = v.poll_id WHERE poll_id = ".$pollID;
             $pollResult = $this->getQuery($sql,'single');
+            
+            
             if(!empty($pollResult)){
                 $resultData['poll'] = $pollResult['subject'];
                 $resultData['total_votes'] = $pollResult['total_votes'];
@@ -135,13 +138,13 @@ class Poll{
      */
     public function createPoll($data = array()){
          try { 
-            $query = "INSERT INTO ".$this->pollTbl." (`id`, `subject`, `status`) VALUES (null, '".htmlspecialchars(strip_tags($data['subject']))."', 1)";
+            $query = "INSERT INTO ".$this->pollTbl." ( `subject`, `status`) VALUES ( '".htmlspecialchars(strip_tags($data['subject']))."', 1)";
             $insert = $this->db->query($query);
             $last_id = $this->db->insert_id;
-            $query2  = " INSERT INTO ".$this->optTbl." (`id`, `poll_id`, `name`, `status`) VALUES
-                (null, ".$last_id.", '". htmlspecialchars(strip_tags($data['options'][0]["name"]))."', '1'),
-                (null, ".$last_id.", '". htmlspecialchars(strip_tags($data['options'][1]["name"]))."', '1'),
-                (null, ".$last_id.", '". htmlspecialchars(strip_tags($data['options'][2]["name"]))."', '1');";
+            $query2  = " INSERT INTO ".$this->optTbl." ( `poll_id`, `name`, `status`) VALUES
+                ( ".$last_id.", '". htmlspecialchars(strip_tags($data['options'][0]["name"]))."', '1'),
+                ( ".$last_id.", '". htmlspecialchars(strip_tags($data['options'][1]["name"]))."', '1'),
+                ( ".$last_id.", '". htmlspecialchars(strip_tags($data['options'][2]["name"]))."', '1');";
             $insert = $this->db->query($query2);
             return true;
 

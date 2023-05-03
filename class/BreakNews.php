@@ -89,11 +89,9 @@ class BreakNews{
      */
     public function createNews($data = array()){
         try { 
-            $query = "INSERT INTO ".$this->newsTbl."(`id`, `Text`, `Creater`) VALUES (null, '".htmlspecialchars(strip_tags($data['Text']))."',".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $query = "INSERT INTO ".$this->newsTbl."(`Text`, `Creator`) VALUES ('".htmlspecialchars(strip_tags($data['Text']))."',".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
-            
             return true;
-
         } catch (mysqli_sql_exception $e) { 
             var_dump($e);
         } 

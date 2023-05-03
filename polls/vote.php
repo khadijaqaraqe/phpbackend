@@ -1,5 +1,22 @@
 <?php
+cors();
 header("Content-Type: application/json; charset=UTF-8");
+function cors() { 
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+      header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+      header('Access-Control-Allow-Credentials: true');
+      header('Access-Control-Max-Age: 86400');    // cache for 1 day
+      header("Content-Type: multipart/form-data");
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+      if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+          header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+      if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+          header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+      exit(0);
+    }
+  }
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
 include_once '../class/Poll.php';
 
@@ -13,7 +30,7 @@ if(isset($_POST['voteSubmit'])){
     );
     //insert vote data
     $voteSubmit = $poll->vote($voteData);
-    echo $voteSubmit;
+    //echo $voteSubmit;
     if($voteSubmit) {
         //store in $_COOKIE to signify the user has voted
         setcookie($_POST['pollID'], 1, time()+60*60*24*365);

@@ -42,8 +42,8 @@ class Complaints{
 
     function createAttachments() {
 		
-		$stmt = $this->conn->prepare("INSERT INTO `attachments` (`id`, `description`, `path`, `type`) VALUES 
-			(NULL, ?, ?, ?);");		
+		$stmt = $this->conn->prepare("INSERT INTO `attachments` ( `description`, `path`, `type`) VALUES 
+			( ?, ?, ?);");		
 		$this->Description = htmlspecialchars(strip_tags($this->Description));
 		$this->Type = htmlspecialchars(strip_tags($this->Type));
 		
@@ -64,8 +64,8 @@ class Complaints{
 	}
 	
 	function create() {
-        $stmt = $this->conn->prepare("INSERT INTO Complaint (ID, Name, PhoneNumber, Topic, Association, ComplaintText, ComplaintDate, Email, UserId) 
-        VALUES (NULL, ?, ?, ?, ?, ?, NOW(), ?, ?);");
+        $stmt = $this->conn->prepare("INSERT INTO Complaint ( Name, PhoneNumber, Topic, Association, ComplaintText, ComplaintDate, Email, UserId) 
+        VALUES (?, ?, ?, ?, ?, NOW(), ?, ?);");
        
         $this->Name = htmlspecialchars(strip_tags($this->Name));
         $this->Topic = htmlspecialchars(strip_tags($this->Topic));
@@ -88,12 +88,12 @@ class Complaints{
                 {
                     
                     $statement = "INSERT INTO `ComplaintAttachments` 
-                    (`id`, `compID`, `attachId`) 
+                    (`compID`, `attachId`) 
                     VALUES ";
                     $valuesStmt = "";
                     foreach($this->attachmentID as $key => $value)
                     {
-                        $valuesStmt .=  "( NULL, 
+                        $valuesStmt .=  "(  
                             '".$this->id."', 
                             '". $value."'), ";
                     };

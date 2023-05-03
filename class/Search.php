@@ -28,14 +28,13 @@ class Search{
         
            // $new_query = $query;
                 $stmt = $this->conn->prepare(
-                "SELECT Articles.ID, Articles.Title, Articles.Text, Articles.ModifiedDate, Articles.CreatedDate, Types.Name, Images.Path, Images.Type, Images.image, Images.CreatedDate
+                "SELECT DISTINCT Articles.ID, Articles.Title, Articles.Text, Articles.ModifiedDate, Articles.CreatedDate, Types.Name, Images.Path, Images.Type, Images.image, Images.CreatedDate
                     FROM Articles LEFT JOIN ArticlesImages ON ArticlesImages.articleId = Articles.ID LEFT JOIN Images ON ArticlesImages.imageId = Images.ID, Types
-                    WHERE Articles.Category = Types.ID AND ArticlesImages.imageId = Images.ID AND ArticlesImages.articleId = Articles.ID AND ( 
+                    WHERE ArticlesImages.imageId = Images.ID AND ArticlesImages.articleId = Articles.ID AND ( 
                         Articles.Title LIKE '%".$new_query."%' 
                         OR Articles.Text LIKE '%".$new_query."%' 
                         OR Types.Description LIKE '%".$new_query."%' 
                         OR Types.Name LIKE '%".$new_query."%' )
-                    
                     ORDER BY Articles.ModifiedDate DESC, Articles.CreatedDate DESC
                     LIMIT 200");
                 

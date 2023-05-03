@@ -1,6 +1,7 @@
 <?php
  	cors();
     header("Content-Type: application/json; charset=UTF-8");
+	
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
     include_once '../class/BreakNews.php';
 	function cors() {

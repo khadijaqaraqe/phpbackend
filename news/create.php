@@ -1,9 +1,11 @@
 <?php
 cors();
-require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/BreakNews.php';
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
+include_once '../class/BreakNews.php';
+
 
 $BreakNews = new BreakNews;
 $newsData = $BreakNews->createNews(json_decode(file_get_contents("php://input"), true));

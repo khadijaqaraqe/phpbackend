@@ -29,8 +29,8 @@ class Directorates{
 	
 	function create() {
 	
-        $stmt = $this->conn->prepare("INSERT INTO Directorates (ID, Name, PhoneNumber, Topic, AssociationID, ComplaintText, ComplaintDate, Email, UserId) 
-        VALUES (NULL, ?, ?, ?, NULL, ?, NOW(), ?, ?);");
+        $stmt = $this->conn->prepare("INSERT INTO Directorates ( Name, PhoneNumber, Topic, AssociationID, ComplaintText, ComplaintDate, Email, UserId) 
+        VALUES ( ?, ?, ?, NULL, ?, NOW(), ?, ?);");
         
         $this->Name = htmlspecialchars(strip_tags($this->Name));
         $this->PhoneNumber = $this->PhoneNumber;

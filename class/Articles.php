@@ -81,8 +81,8 @@ class Articles{
 
 	function createImages() {
 		
-		$stmt2 = $this->conn->prepare("INSERT INTO `Images` (`ID`, `AltText`, `CreatorId`, `Path`, `Type`) VALUES 
-			(NULL, ?, ?, ?, ?);");		
+		$stmt2 = $this->conn->prepare("INSERT INTO `Images` ( `AltText`, `CreatorId`, `Path`, `Type`) VALUES 
+			( ?, ?, ?, ?);");		
 		$this->AltText = htmlspecialchars(strip_tags($this->AltText));
 		$this->CreatorId = htmlspecialchars(strip_tags($this->CreatorId));
 		//$this->Path = $this->Path;
@@ -145,12 +145,12 @@ class Articles{
 
 					//	echo $value;
 				$statement = "INSERT INTO `ArticlesImages` 
-				(`id`, `articleId`, `imageId`, `Description`) 
+				( `articleId`, `imageId`, `Description`) 
 				VALUES ";
 				$valuesStmt = "";
 				 foreach($this->imagesID as $key => $value)
 					{
-						$valuesStmt .=  "( NULL, 
+						$valuesStmt .=  "(  
 							'".$uuid."', 
 							'". $value."', 	
 							'" .$this->Description."'), ";
