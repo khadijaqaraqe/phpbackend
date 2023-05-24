@@ -5,12 +5,12 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Access-Control-Allow-Origin, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/EmpArticles.php';
+include_once '../class/DepartmentArticles.php';
 
 $database = new Database();
 $db = $database->getConnection();
  
-$items = new Articles($db);
+$items = new DepartmentArticles($db);
 
 $items->id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : "";
 
@@ -24,15 +24,35 @@ if($result->num_rows > 0){
 
         $itemDetails=array(
             "id" => $item['id'],
-            "firstName" => $item['first_name'],
-            "lastName" => $item['last_name'],
+            //"firstName" => $item['first_name'],
+            //"lastName" => $item['last_name'],
             "title" => $item['title'],
 			"text" => $item['text'],
-            "path" => $item['path'],
+            //"path" => $item['path'],
             "category" => $item['name'],            
 			"created" => $item['created_date'],
-            "modified" => $item['modified_date']		
+            "modified" => $item['modified_date']	,
+            "images"=> array()		
         ); 
+        foreach ($item as $key => $value) {
+           
+           $result2 = $items->getImages($value);
+
+           
+             if ($result2->num_rows > 0){
+                while ($item = $result2->fetch_assoc()) { 	
+                    extract($item); 
+                $ImagesItemDetails = array();
+               
+             array_push($itemDetails['images'], $item['path']);   
+            }
+               
+                } else {
+                 
+                }
+            }
+          
+
        array_push($itemRecords["articles"], $itemDetails);
     }    
    

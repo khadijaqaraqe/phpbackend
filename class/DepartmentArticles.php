@@ -5,7 +5,7 @@ class DepartmentArticles{
 	private $articleImagesTable = "department_articles_images";
 	private $usersTable = "users";
 	private $imagesTable = "department_images";
-	private $typesTable ="department_types";
+	private $typesTable ="departments";
 	private $departmentTable = "departments";
     public $id;
     public $title;
@@ -31,6 +31,17 @@ class DepartmentArticles{
     public function __construct($db){
         $this->conn = $db;
     }	
+
+	function getImages($item) {
+        $stmt2 = $this->conn->prepare(" SELECT DISTINCT `".$this->imagesTable."`.`path`, `".$this->imagesTable."`.`type`, `".$this->imagesTable."`.`image`, `".$this->imagesTable."`.`created_date`
+        FROM `".$this->imagesTable."` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.`image_id` = `".$this->imagesTable."`.`id`
+        WHERE `".$this->articleImagesTable."`.`image_id` = `".$this->imagesTable."`.id AND `".$this->articleImagesTable."`.`article_id`= '".strval($item)."'");
+		if($stmt2->execute() === true){
+			$results2 = $stmt2->get_result();
+			return $results2;
+		}
+	}
+
 	function GetDepartments() {
 		$stmt = $this->conn->prepare("SELECT `".$this->departmentTable."`.`id`, `".$this->departmentTable."`.`name`, `".$this->departmentTable."`.`manager` FROM `".$this->departmentTable."`");
 		if ($stmt->execute()) {
@@ -41,17 +52,45 @@ class DepartmentArticles{
 		}	
 	}
 	
-	function read(){	
+	function read(){
+		
+	/* 	$stmt1 = $this->conn->prepare(
+			"SELECT DISTINCT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date 
+			FROM `".$this->articlesTable."`
+		   WHERE 
+			 ( `".$this->articlesTable."`.title LIKE '%".$new_query."%'
+			   OR `".$this->articlesTable."`.text LIKE  '%".$new_query."%')
+		   ORDER BY `".$this->articlesTable."`.modified_date DESC, `".$this->articlesTable."`.created_date DESC
+		   LIMIT 200 "
+		   ); */
+		   
+		/* 	$result1 = null; 
+			if($stmt1->execute() === true) { 
+			  			
+				$result1 = $stmt1->get_result();
+				return $result1;
+			
+
+			} */
+		
+
+
+
+
+
 		if($this->id) {
 			$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->typesTable."`.name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.type, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
 			FROM (`".$this->articlesTable."` JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.article_id = `".$this->articlesTable."`.id  JOIN `".$this->imagesTable."` ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id), `".$this->typesTable."`, `".$this->usersTable."`  
-			WHERE `".$this->articlesTable."`.category = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id AND `".$this->articlesTable."`.id = ?
+			WHERE `".$this->articlesTable."`.department_id = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id AND `".$this->articlesTable."`.id = ?
 			ORDER BY `".$this->imagesTable."`.created_date ASC");
 			$stmt->bind_param("s", $this->id);					
 		} else {
-			$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->typesTable."`.name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.`type`, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
-			FROM `".$this->articlesTable."` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.article_id = `".$this->articlesTable."`.id LEFT JOIN `".$this->imagesTable."` ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id, `".$this->typesTable."`, `".$this->usersTable."`   
-			WHERE `".$this->articlesTable."`.category = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id
+			// .$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->typesTable."`.name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.`type`, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
+			// ` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.article_id = `".$this->articlesTable."`.id LEFT JOIN `".$this->imagesTable."` ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id, `".$this->typesTable."`, `".$this->usersTable."` 
+			// AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id
+			$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->typesTable."`.name
+			FROM `".$this->articlesTable."`, `".$this->typesTable."`
+			WHERE `".$this->articlesTable."`.department_id = `".$this->typesTable."`.id
 			ORDER BY `".$this->articlesTable."`.modified_date DESC, `".$this->articlesTable."`.created_date DESC 
 			LIMIT 5;");		
 		}		
@@ -67,7 +106,7 @@ class DepartmentArticles{
 	function GetFirst25(){	
 		$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->typesTable."`.name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.type, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
 		FROM `".$this->articlesTable."` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.article_id = `".$this->articlesTable."`.id LEFT JOIN Images ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id, `".$this->typesTable."`, `".$this->usersTable."`   
-		WHERE `".$this->articlesTable."`.category = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id 
+		WHERE `".$this->articlesTable."`.department_id = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id 
 		
 		ORDER BY `".$this->articlesTable."`.modified_date DESC, `".$this->articlesTable."`.created_date DESC 
 		LIMIT ?, ?;");		
@@ -86,7 +125,7 @@ class DepartmentArticles{
 	/* function readTickers() {	
 		$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text 
 		FROM `".$this->articlesTable."` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.article_id = `".$this->articlesTable."`.id LEFT JOIN Images ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id, types, `".$this->usersTable."`   
-		WHERE `".$this->articlesTable."`.category = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id 
+		WHERE `".$this->articlesTable."`.department_id = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id 
 		
 		ORDER BY `".$this->articlesTable."`.modified_date DESC, `".$this->articlesTable."`.created_date DESC 
 		LIMIT 15;");
