@@ -20,9 +20,9 @@ if($result->num_rows > 0){
 	 while ($item = $result->fetch_assoc()) { 	
         extract($item); 
         $itemDetails=array(
-            "id" => $item['ID'],
-            "title" => $item['Title'],
-			"text" => $item['Text'],
+            "id" => $item['id'],
+            "title" => $item['title'],
+			"text" => $item['text'],
         ); 
        array_push($itemRecords["tickers"], $itemDetails);
     }    

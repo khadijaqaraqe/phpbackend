@@ -22,15 +22,15 @@ if($result->num_rows > 0){
         extract($item); 
 
         $itemDetails=array(
-            "id" => $item['ID'],
-            "Name" => $item['Name'],
-            "PhoneNumber" => $item['PhoneNumber'],
-            "Topic" => $item['Topic'],
-			"Association" => $item['Association'],
-            "ComplaintText" => $item['ComplaintText'],            
-			"ComplaintDate" => $item['ComplaintDate'],
-            "Email" => $item['Email'],
-            "UserId" => $item['UserId']		
+            "id" => $item['id'],
+            "Name" => $item['name'],
+            "PhoneNumber" => $item['phone_number'],
+            "Topic" => $item['topic'],
+			"Association" => $item['association'],
+            "ComplaintText" => $item['complaint_text'],            
+			"ComplaintDate" => $item['complaint_date'],
+            "Email" => $item['email'],
+            "UserId" => $item['user_id']		
         ); 
        array_push($itemRecords["complaints"], $itemDetails);
     }    

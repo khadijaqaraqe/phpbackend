@@ -5,35 +5,28 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Access-Control-Allow-Origin, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/Articles.php';
+include_once '../class/DepartmentArticles.php';
 
 $database = new Database();
 $db = $database->getConnection();
  
-$items = new Articles($db);
+$items = new DepartmentArticles($db);
 
-$items->id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : "";
-
-$result = $items->read();
+$result = $items->GetDepartments();
 
 if($result->num_rows > 0){    
     $itemRecords=array();
-    $itemRecords["articles"]=array(); 
+    $itemRecords["departments"]=array(); 
 	 while ($item = $result->fetch_assoc()) { 	
         extract($item); 
-       //print_r($item);
+
         $itemDetails=array(
             "id" => $item['id'],
-            "firstName" => $item['first_name'],
-            "lastName" => $item['last_name'],
-            "title" => $item['title'],
-			"text" => $item['text'],
-            "path" => $item['path'],
-            "category" => $item['name'],            
-			"created" => $item['created_date'],
-            "modified" => $item['modified_date']		
+            "name" => $item['name'],
+            "manager" => $item['manager']
+           	
         ); 
-       array_push($itemRecords["articles"], $itemDetails);
+       array_push($itemRecords["departments"], $itemDetails);
     }    
    
     echo json_encode($itemRecords);
@@ -42,6 +35,6 @@ if($result->num_rows > 0){
 }else{     
     http_response_code(404);     
     echo json_encode(
-        array("message" => "No article found.")
+        array("message" => "No department found.")
     );
 } 

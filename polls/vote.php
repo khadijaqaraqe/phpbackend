@@ -23,23 +23,27 @@ include_once '../class/Poll.php';
 $poll = new Poll;
 
 $_POST = json_decode(file_get_contents('php://input'), true);
-if(isset($_POST['voteSubmit'])){
-    $voteData = array(
-        'poll_id' => $_POST['pollID'],
-        'poll_option_id' => $_POST['voteOpt']
-    );
-    //insert vote data
-    $voteSubmit = $poll->vote($voteData);
-    //echo $voteSubmit;
-    if($voteSubmit) {
-        //store in $_COOKIE to signify the user has voted
-        setcookie($_POST['pollID'], 1, time()+60*60*24*365);
-        http_response_code(200);          
-        echo json_encode(array("message" => "Your vote has been submitted successfully."));
+
+    if(isset($_POST['voteSubmit']) && !empty($_POST['pollID']) && !preg_match("/[a-z]/i", strval($_POST['pollID']))){
+        $voteData = array(
+            'poll_id' => htmlspecialchars(strip_tags($_POST['pollID'])),
+            'poll_option_id' => htmlspecialchars(strip_tags($_POST['voteOpt']))
+        );
+        //insert vote data
+        $voteSubmit = $poll->vote($voteData);
+        //echo $voteSubmit;
+        if($voteSubmit) {
+            //store in $_COOKIE to signify the user has voted
+            setcookie($_POST['pollID'], 1, time()+60*60*24*365);
+            http_response_code(200);          
+            echo json_encode(array("message" => "Your vote has been submitted successfully."));
+        } else {
+            http_response_code(404);          
+            echo json_encode(array("message" => "Your vote already had submitted."));
+        }
     } else {
         http_response_code(404);          
-        echo json_encode(array("message" => "Your vote already had submitted."));
+        echo json_encode(array("message" => "No Matching poll"));
     }
-}
 
 ?>

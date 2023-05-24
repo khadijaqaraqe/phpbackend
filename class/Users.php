@@ -3,7 +3,7 @@ class Users{
    
     // database connection and table name
     private $conn;
-    private $table_name = "Users";
+    private $table_name = "users";
  
     // object properties
     public $id;
@@ -30,15 +30,15 @@ class Users{
         "INSERT INTO
         " . $this->table_name . "
                 SET
-                    `ID`=?,
-                    `UserName`=?, 
-                    `Password`=?, 
-                    `Email`=?, 
-                    `FirstName`=?, 
-                    `LastName`=?, 
-                    `PhoneNumber`=?, 
-                    `DateOfBirth`=?, 
-                    `DepartmentID`=?";
+                    `id`=?,
+                    `user_name`=?, 
+                    `password`=?, 
+                    `email`=?, 
+                    `first_name`=?, 
+                    `last_name`=?, 
+                    `phone_number`=?, 
+                    `date_of_birth`=?, 
+                    `department_id`=?";
         
         /*  "INSERT INTO `Users` (`ID`, `FirstName`, `LastName`, `Email`, `PhoneNumber`, `Password`, `DateOfBirth`, `DepartmentID`, `UserName) 
         VALUES (NULL, ':username', ':LastName', ':email', ':PhoneNumber', ':password', ':DateOfBirth', ':DepartmentID', ':username')"; */
@@ -113,9 +113,9 @@ class Users{
 
     // login user
     function login() {
-        $query1 = "SELECT `Password`
-                    FROM   `Users`
-                    WHERE (Users.UserName = ?) OR ( Users.Email = ?)
+        $query1 = "SELECT `password`
+                    FROM  `users`
+                    WHERE (users.user_name = ?) OR ( users.email = ?)
                     LIMIT 1;";
         $stmt1 = $this->conn->prepare($query1);
         
@@ -151,11 +151,11 @@ class Users{
             // select all query
             $query = 
                     "SELECT
-                        `ID`, `Username`, `createdAt`, `FirstName`, `LastName`, `Email`, `PhoneNumber`, `DepartmentID`, `DateOfBirth`
+                        `id`, `user_name`, `created_at`, `first_name`, `last_name`, `email`, `phone_number`, `department_id`, `date_of_birth`
                     FROM
-                    `Users`
+                    `users`
                     WHERE
-                        (Users.UserName = ? AND Users.Password = ?) OR ( Users.Email = ? AND Users.Password = ?)
+                        (users.user_name = ? AND users.password = ?) OR ( users.email = ? AND users.password = ?)
                         
                     LIMIT  1;";
                 
@@ -185,9 +185,9 @@ class Users{
                     $user_arr=array(
                         "status" => true,
                         "message" => "Successfully Login!",
-                        "id" => $row['ID'],
-                        "username" => $row['Username'], 
-                        "email"=> $row['Email']
+                        "id" => $row['id'],
+                        "username" => $row['user_name'], 
+                        "email"=> $row['email']
                     );
                     http_response_code(200); 
                     echo json_encode($user_arr);
@@ -227,7 +227,7 @@ class Users{
             FROM
                 " . $this->table_name . " 
             WHERE
-            Users.UserName='?' OR Users.Email ='?'";
+            users.user_name='?' OR users.email ='?'";
              
         // prepare query statement
         $stmt = $this->conn->prepare($query);

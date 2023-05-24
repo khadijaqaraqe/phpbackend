@@ -2,7 +2,9 @@
 class Complaints{   
     
    
-  
+    private $complaintTable = "complaint";
+    private $complaintAttachementTable ="complaint_attachments";
+    private $attachmentTable = "attachments";
     public $Name;
     public $id; 
     public $PhoneNumber;
@@ -25,16 +27,16 @@ class Complaints{
     }	
 	function readOne($data){	
 		$stmt = $this->conn->prepare(
-            "SELECT  Complaint.ID, Complaint.Name, Complaint.PhoneNumber, Complaint.Topic, Complaint.Association, Complaint.ComplaintText, Complaint.ComplaintDate, Complaint.Email, Complaint.UserId,  Attachments.path, Attachments.created, Attachments.type, Attachments.modified
-			FROM (Complaint  LEFT JOIN ComplaintAttachments ON ComplaintAttachments.compId = Complaint.ID LEFT JOIN Attachments ON ComplaintAttachments.attachId = Attachments.id)  
-			WHERE Complaint.ID ='".$data->id."'");
+            "SELECT  `".$this->complaintTable."`.id, ".$this->complaintTable.".name, ".$this->complaintTable.".phone_number, ".$this->complaintTable.".topic, ".$this->complaintTable.".association, ".$this->complaintTable.".complaint_text, ".$this->complaintTable.".complaint_date, ".$this->complaintTable.".email, ".$this->complaintTable.".user_id,  `".$this->attachmentTable."`.path, `".$this->attachmentTable."`.created, `".$this->attachmentTable."`.type, `".$this->attachmentTable."`.modified
+			FROM (".$this->complaintTable." LEFT JOIN `".$this->complaintAttachementTable."` ON `".$this->complaintAttachementTable."`.comp_id = ".$this->complaintTable.".id LEFT JOIN `".$this->attachmentTable."` ON `".$this->complaintAttachementTable."`.attach_id = `".$this->attachmentTable."`.id)  
+			WHERE ".$this->complaintTable.".id ='".$data->id."'");
 		$stmt->execute();			
 		$result = $stmt->get_result();		
 		return $result;	
 	}
 
 	function read(){	
-		$stmt = $this->conn->prepare("SELECT ID, Name, PhoneNumber, Topic, Association, ComplaintText, ComplaintDate, Email, UserId FROM Complaint;");		
+		$stmt = $this->conn->prepare("SELECT id, name, phone_number, topic, association, complaint_text, complaint_date, email, user_id FROM ".$this->complaintTable.";");		
 		$stmt->execute();			
 		$result = $stmt->get_result();		
 		return $result;	
@@ -64,7 +66,7 @@ class Complaints{
 	}
 	
 	function create() {
-        $stmt = $this->conn->prepare("INSERT INTO Complaint ( Name, PhoneNumber, Topic, Association, ComplaintText, ComplaintDate, Email, UserId) 
+        $stmt = $this->conn->prepare("INSERT INTO ".$this->complaintTable." ( name, phone_number, topic, association, complaint_text, complaint_date, email, user_id) 
         VALUES (?, ?, ?, ?, ?, NOW(), ?, ?);");
        
         $this->Name = htmlspecialchars(strip_tags($this->Name));
@@ -87,8 +89,8 @@ class Complaints{
                 foreach($this->attachmentID as $key => $value)
                 {
                     
-                    $statement = "INSERT INTO `ComplaintAttachments` 
-                    (`compID`, `attachId`) 
+                    $statement = "INSERT INTO `".$this->complaintAttachementTable."` 
+                    (`comp_id`, `attach_id`) 
                     VALUES ";
                     $valuesStmt = "";
                     foreach($this->attachmentID as $key => $value)

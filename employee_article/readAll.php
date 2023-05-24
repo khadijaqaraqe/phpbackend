@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Access-Contro
 
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/Articles.php';
+include_once '../class/EmpArticles.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -24,7 +24,7 @@ if($result->num_rows > 0){
         extract($item); 
 
         $itemDetails=array(
-            "id" => $item['id'],
+            "id" => $item['ID'],
             "firstName" => $item['first_name'],
             "lastName" => $item['last_name'],
             "title" => $item['title'],

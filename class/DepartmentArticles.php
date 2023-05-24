@@ -1,11 +1,12 @@
 <?php
-class Articles{   
+class DepartmentArticles{   
     
-    private $articlesTable = "articles";    
-	private $articleImagesTable = "articles_images";
+    private $articlesTable = "department_articles";    
+	private $articleImagesTable = "department_articles_images";
 	private $usersTable = "users";
-	private $imagesTable = "images";
-	private $typesTable ="types";
+	private $imagesTable = "department_images";
+	private $typesTable ="department_types";
+	private $departmentTable = "departments";
     public $id;
     public $title;
     public $creator_id;
@@ -24,11 +25,21 @@ class Articles{
 	public $FirstRow;
 	public $LastRow;
     public $image_id;
+	public $department_id;
 	private $conn;
 	
     public function __construct($db){
         $this->conn = $db;
     }	
+	function GetDepartments() {
+		$stmt = $this->conn->prepare("SELECT `".$this->departmentTable."`.`id`, `".$this->departmentTable."`.`name`, `".$this->departmentTable."`.`manager` FROM `".$this->departmentTable."`");
+		if ($stmt->execute()) {
+			$result = $stmt->get_result();	
+			return $result;	
+		} else { 
+			return false;
+		}	
+	}
 	
 	function read(){	
 		if($this->id) {
@@ -40,8 +51,7 @@ class Articles{
 		} else {
 			$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->typesTable."`.name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.`type`, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
 			FROM `".$this->articlesTable."` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.article_id = `".$this->articlesTable."`.id LEFT JOIN `".$this->imagesTable."` ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id, `".$this->typesTable."`, `".$this->usersTable."`   
-			WHERE `".$this->articlesTable."`.category = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id 
-			
+			WHERE `".$this->articlesTable."`.category = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id
 			ORDER BY `".$this->articlesTable."`.modified_date DESC, `".$this->articlesTable."`.created_date DESC 
 			LIMIT 5;");		
 		}		
@@ -52,7 +62,6 @@ class Articles{
 			return false;
 		}			
 			
-		
 	}
 
 	function GetFirst25(){	
@@ -91,7 +100,7 @@ class Articles{
 	function createImages() {
 		
 		$stmt2 = $this->conn->prepare("INSERT INTO `".$this->imagesTable."` ( `alt_text`, `creator_id`, `path`, `type`) VALUES 
-			(?, ?, ?, ?);");		
+			( ?, ?, ?, ?);");		
 		$this->alt_text = htmlspecialchars(strip_tags($this->alt_text));
 		$this->creator_id = htmlspecialchars(strip_tags($this->creator_id));
 		//$this->path = $this->path;
@@ -116,30 +125,31 @@ class Articles{
 	}
 						 
 	function create() {
-		$uuid = uniqid(date("Y").date("n").'0');//$this->conn->prepare("SELECT uniqid();");
-	//	if($uuid->execute() === true) {
+		$uuid = "department-".$this->department_id.uniqid(date("Y").date("n").'0');
+		//	$this->conn->prepare("SELECT uniqid();");
+		//	if($uuid->execute() === true) {
 		//	$uuid->store_result();
 		//	$uuid->bind_result($this->article_id);
 		//	$uuid->fetch();
-			
-			
-			//$this->article_id = ($uuid->fetch_assoc())['UUID()'];
+		//  $this->article_id = ($uuid->fetch_assoc())['UUID()'];
 
-			$stmt = $this->conn->prepare("INSERT INTO `".$this->articlesTable."` (`id`, `category`, `created_date`, `creator`, `modified_date`, `text`, `title`) VALUES 
-			(?, ?, NOW(), ?, NOW(), ?, ?);");
+			$stmt = $this->conn->prepare("INSERT INTO `".$this->articlesTable."` (`id`, `category`, `created_date`, `creator`, `modified_date`, `text`, `title`, `department_id`) VALUES 
+			(?, ?, NOW(), ?, NOW(), ?, ?, ?);");
 			$this->id =  $uuid;//$this->article_id;
 			$this->category = htmlspecialchars(strip_tags($this->category));
 			$this->creator_id = htmlspecialchars(strip_tags($this->creator_id));
+			$this->department_id = intval(htmlspecialchars(strip_tags($this->department_id)));
 			$this->text = (strip_tags($this->text));
 			//$this->title = $this->title;
 
-			$stmt->bind_param("siiss", 
+			$stmt->bind_param("siissi", 
 			$this->id,
 			$this->category,
 			$this->creator_id, 
 			$this->text,  
-			$this->title); 
-			if($stmt->execute() === true) {
+			$this->title,
+			$this->department_id); 
+			if($stmt->execute()===true) {
 				
 					/* foreach($this->imagesID as $key => $value)
 					{

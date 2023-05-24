@@ -21,7 +21,7 @@ class Directorates{
 	
 	function read(){	
 		
-		$stmt = $this->conn->prepare("SELECT ID, Name, PhoneNumber, Topic, AssociationID, ComplaintText, ComplaintDate, Email, UserId FROM Complaint;");		
+		$stmt = $this->conn->prepare("SELECT id, name, phone_number, topic, association_id, complaint_text, complaint_date, email, user_id FROM complaint;");		
 		$stmt->execute();			
 		$result = $stmt->get_result();		
 		return $result;	
@@ -29,16 +29,10 @@ class Directorates{
 	
 	function create() {
 	
-        $stmt = $this->conn->prepare("INSERT INTO Directorates ( Name, PhoneNumber, Topic, AssociationID, ComplaintText, ComplaintDate, Email, UserId) 
+        $stmt = $this->conn->prepare("INSERT INTO directorates ( name, phone_number, topic, association_id, complaint_text, complaint_date, email, user_id) 
         VALUES ( ?, ?, ?, NULL, ?, NOW(), ?, ?);");
-        
         $this->Name = htmlspecialchars(strip_tags($this->Name));
-        $this->PhoneNumber = $this->PhoneNumber;
         $this->created = htmlspecialchars(strip_tags($this->created));
-        $this->creator = $this->creator;
-        $this->Email = $this->Email;
-        $this->UserId = $this->UserId;
-
         $stmt->bind_param("sisssi", 
         $this->Name,
         $this->PhoneNumber,

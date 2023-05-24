@@ -57,9 +57,9 @@ if($reportData) {
      
     $itemDetails=array(
       "id" => $value['id'],
-      "Title" => $value['Title'],
+      "Title" => $value['title'],
       "Path" => $value['path'],
-      "Creator" => $value['Creator'],
+      "Creator" => $value['creator'],
       "created" => $value['created'],
       "modified" => $value['modified']
     ); 

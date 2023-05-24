@@ -20,9 +20,9 @@ class Publications {
     private $dbPwd   = 'N2c-v}fSq(,$';
     private $dbName  = 'gcc10_BethlehemGov';             
     private $db      = false;
-    private $reportsTbl = 'Reports';
-    private $plansTbl = 'Plan';
-    private $magazineTbl = 'Magazine';
+    private $reportsTbl = 'reports';
+    private $plansTbl = 'plan';
+    private $magazineTbl = 'magazine';
     public function __construct(){
         if(!$this->db){ 
             // Connect to the database
@@ -95,9 +95,9 @@ class Publications {
      * @data report subject and options (accepted three options)
      */
     public function createReport($data = array()){
-
+       
          try { 
-            $query = "INSERT INTO `".$this->reportsTbl."` ( `Title`, `Path`, `Creator`) VALUES ('".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $query = "INSERT INTO `".$this->reportsTbl."` ( `title`, `path`, `creator`) VALUES ('".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
             
             return true;
@@ -113,7 +113,7 @@ class Publications {
      */
      public function updateReport($data = array()){
         try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
-           $query = "UPDATE ".$this->reportsTbl." SET `Title` =  '".htmlspecialchars(strip_tags($data['Title']))."' WHERE ".$this->reportsTbl.".`id` = ".$data['id'].";";
+           $query = "UPDATE ".$this->reportsTbl." SET `title` =  '".htmlspecialchars(strip_tags($data['Title']))."' WHERE ".$this->reportsTbl.".`id` = ".$data['id'].";";
            $update = $this->db->query($query);
           
            return true;
@@ -173,7 +173,7 @@ class Publications {
     public function createPlan($data = array()){
 
          try { 
-            $query = "INSERT INTO `".$this->plansTbl."` (`Title`, `Path`, `Creator`) VALUES ( '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $query = "INSERT INTO `".$this->plansTbl."` (`title`, `path`, `creator`) VALUES ( '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
             
             return true;
@@ -249,7 +249,7 @@ class Publications {
     public function createMagazine($data = array()){
 
          try { 
-            $query = "INSERT INTO `".$this->magazineTbl."` (`Title`, `Path`, `Creator`) VALUES ( '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $query = "INSERT INTO `".$this->magazineTbl."` (`title`, `path`, `creator`) VALUES ( '".htmlspecialchars(strip_tags($data['Title']))."', '".htmlspecialchars(strip_tags($data['Path']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
             
             return true;
@@ -265,7 +265,7 @@ class Publications {
      */
      public function updateMagazine($data = array()){
         try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
-           $query = "UPDATE ".$this->magazineTbl." SET `Title` =  '".htmlspecialchars(strip_tags($data['Title']))."' WHERE ".$this->magazineTbl.".`id` = ".$data['id'].";";
+           $query = "UPDATE ".$this->magazineTbl." SET `title` =  '".htmlspecialchars(strip_tags($data['Title']))."' WHERE ".$this->magazineTbl.".`id` = ".$data['id'].";";
            $update = $this->db->query($query);
           
            return true;

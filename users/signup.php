@@ -173,7 +173,7 @@ else :
                 $returnData = msg(0, 422, 'This E-mail already in use!');
 
             else :
-                $insert_query = "INSERT INTO `Users` ( `UserName`,`Email`,`Password`, `DepartmentID`, `PhoneNumber`, `FirstName`, `LastName`, `DateOfBirth`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
+                $insert_query = "INSERT INTO `users` ( `user_name`,`email`,`password`, `department_id`, `phone_number`, `first_name`, `last_name`, `date_of_birth`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
 
                 $insert_stmt = $conn->prepare($insert_query);
                 // INSERT INTO `users` (`ID`, `FirstName`, `LastName`,  

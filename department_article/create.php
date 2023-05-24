@@ -11,7 +11,7 @@
     */
  
     require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-    include_once '../class/Articles.php';
+    include_once '../class/DepartmentArticles.php';
     
     $database = new Database();
 
@@ -48,7 +48,7 @@
     // global $_POST_JSON;
     // print_r("datadatadatadatadatadatadatadatadatadata");
     // print_r($data);
-    $items = new Articles($db);
+    $items = new DepartmentArticles($db);
     $folderPath = dirname(__DIR__,2)."/images/";
     $postData = file_get_contents("php://input");
     
@@ -56,10 +56,10 @@
  
     $decoded_json = json_decode($people_json, false);
     
-   // echo $decoded_json->Title;
+    echo $decoded_json->Title;
     // Monty
     
-    //echo $decoded_json->Text;
+    echo $decoded_json->Text;
     //$data = json_decode($postData);
     //$postData = $_POST["request"];
     $data = json_decode($postData);
@@ -77,6 +77,7 @@
     //echo($_POST['Title']);
     $items->title = $data->Title;// $_POST['Title'];//$_POST["Title"]; 
     $items->creator_id = $data->creatorId;
+    $items->department_id = $data->departmentId;
     $items->category = 1;	
     $items->text = $data->Text;//$_POST['Text'];//($_POST["Text"]);
     
@@ -191,10 +192,10 @@
   }
   if($items->create()) {         
     http_response_code(200);          
-    echo json_encode(array("message" => "Article was created."));
+    echo json_encode(array("message" => "Department Article was created."));
   } else {         
     http_response_code(503);        
-    echo json_encode(array("message" => "Unable to create article."));
+    echo json_encode(array("message" => "Unable to create department article."));
   } 
 
 

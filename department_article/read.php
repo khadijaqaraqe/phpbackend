@@ -1,21 +1,20 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+
 header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Access-Control-Allow-Origin, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/Articles.php';
+include_once '../class/EmpArticles.php';
 
 $database = new Database();
 $db = $database->getConnection();
  
 $items = new Articles($db);
 
-$items->FirstRow = (isset($_GET['FirstRow']) && $_GET['FirstRow']) ? $_GET['FirstRow'] : "";
-$items->LastRow = (isset($_GET['LastRow']) && $_GET['LastRow']) ? $_GET['LastRow'] : "";
+$items->id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : "";
 
-$result = $items->GetFirst25();
+$result = $items->read();
 
 if($result->num_rows > 0){    
     $itemRecords=array();
@@ -30,7 +29,6 @@ if($result->num_rows > 0){
             "title" => $item['title'],
 			"text" => $item['text'],
             "path" => $item['path'],
-            //"image" => $item['image'],
             "category" => $item['name'],            
 			"created" => $item['created_date'],
             "modified" => $item['modified_date']		
@@ -41,7 +39,7 @@ if($result->num_rows > 0){
     echo json_encode($itemRecords);
     http_response_code(200);     
     
-} else {     
+}else{     
     http_response_code(404);     
     echo json_encode(
         array("message" => "No article found.")

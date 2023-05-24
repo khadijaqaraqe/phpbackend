@@ -251,7 +251,7 @@ else:
                 $row =  $result->fetch_assoc();
                 //echo implode(" ", $row);
                // $row = $query_stmt->fetch(PDO::FETCH_ASSOC);
-                $check_password = password_verify($password, $row['Password']);
+                $check_password = password_verify($password, $row['password']);
 
                 // VERIFYING THE PASSWORD (IS CORRECT OR NOT?)
                 // IF PASSWORD IS CORRECT THEN SEND THE LOGIN TOKEN
@@ -260,14 +260,14 @@ else:
                     $jwt = new JwtHandler();
                     $token = $jwt->jwtEncodeData(
                         'http://localhost/php_auth_api/',
-                        array("user_id"=> $row['ID'])
+                        array("user_id"=> $row['id'])
                     );
                     
                     $returnData = [
                         'success' => 1,
                         'message' => 'You have successfully logged in.',
                         'token' => $token, 
-                        'userId' => $row['ID']
+                        'userId' => $row['id']
                     ];
 
                 // IF INVALID PASSWORD
