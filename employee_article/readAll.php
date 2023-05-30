@@ -5,12 +5,12 @@ header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Access-Contro
 
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/EmpArticles.php';
+include_once '../class/EmployeesArticles.php';
 
 $database = new Database();
 $db = $database->getConnection();
  
-$items = new Articles($db);
+$items = new EmployeesArticles($db);
 
 $items->FirstRow = (isset($_GET['FirstRow']) && $_GET['FirstRow']) ? $_GET['FirstRow'] : "";
 $items->LastRow = (isset($_GET['LastRow']) && $_GET['LastRow']) ? $_GET['LastRow'] : "";
@@ -30,7 +30,7 @@ if($result->num_rows > 0){
             "title" => $item['title'],
 			"text" => $item['text'],
             "path" => $item['path'],
-            //"image" => $item['image'],
+           
             "category" => $item['name'],            
 			"created" => $item['created_date'],
             "modified" => $item['modified_date']		

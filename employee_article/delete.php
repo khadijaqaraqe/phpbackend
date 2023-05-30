@@ -2,7 +2,7 @@
  	cors();
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-	include_once '../class/EmpArticles.php';
+	include_once '../class/EmployeesArticles.php';
 	function cors() {
     
 		// Allow from any origin
@@ -32,11 +32,8 @@
 	$database = new Database();
 	$db = $database->getConnection();
 	
-	$items = new Articles($db);
-	$data = json_decode(file_get_contents("php://input"));// (isset($_GET['DeleteArticleID']) && $_GET['DeleteArticleID']) ? $_GET['DeleteArticleID'] : "";
-	//$data = $_GET['DeleteArticleID'];// (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : "";//$_GET['id']//json_decode(file_get_contents("php://input"));
-//	print_r ("_GET['DeleteArticleID']");
-//	print_r ($_GET['DeleteArticleID']);
+	$items = new EmployeesArticles($db);
+	$data = json_decode(file_get_contents("php://input"));
 
 	if(!empty($data->id )){ 
 		

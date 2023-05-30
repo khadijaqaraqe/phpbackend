@@ -23,7 +23,7 @@ function cors() {
 $poll = new Poll;
 
 $_POST = json_decode(file_get_contents('php://input'), true);
-if(isset($_POST['pollID']) && !preg_match("/[a-z]/i", strval($_POST['pollID']))){
+if(isset($_POST['pollID']) && preg_match('/^[0-9]+$/', strval($_POST['pollID'])) > 0) {
    //get poll result data
     $pollResult = $poll->getResult($_POST['pollID']);
     if($pollResult){

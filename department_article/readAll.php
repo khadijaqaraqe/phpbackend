@@ -10,7 +10,7 @@ include_once '../class/EmpArticles.php';
 $database = new Database();
 $db = $database->getConnection();
  
-$items = new Articles($db);
+$items = new DepartmentArticles($db);
 
 $items->FirstRow = (isset($_GET['FirstRow']) && $_GET['FirstRow']) ? $_GET['FirstRow'] : "";
 $items->LastRow = (isset($_GET['LastRow']) && $_GET['LastRow']) ? $_GET['LastRow'] : "";

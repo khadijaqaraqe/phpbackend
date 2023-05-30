@@ -32,7 +32,7 @@
 	$database = new Database();
 	$db = $database->getConnection();
 	
-	$items = new Articles($db);
+	$items = new DepartmentArticles($db);
 	$data = json_decode(file_get_contents("php://input"));// (isset($_GET['DeleteArticleID']) && $_GET['DeleteArticleID']) ? $_GET['DeleteArticleID'] : "";
 	//$data = $_GET['DeleteArticleID'];// (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : "";//$_GET['id']//json_decode(file_get_contents("php://input"));
 //	print_r ("_GET['DeleteArticleID']");

@@ -56,10 +56,10 @@
  
     $decoded_json = json_decode($people_json, false);
     
-    echo $decoded_json->Title;
+   // echo $decoded_json->Title;
     // Monty
     
-    echo $decoded_json->Text;
+   // echo $decoded_json->Text;
     //$data = json_decode($postData);
     //$postData = $_POST["request"];
     $data = json_decode($postData);

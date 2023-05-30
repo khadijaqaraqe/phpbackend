@@ -24,7 +24,7 @@ $poll = new Poll;
 
 $_POST = json_decode(file_get_contents('php://input'), true);
 
-    if(isset($_POST['voteSubmit']) && !empty($_POST['pollID']) && !preg_match("/[a-z]/i", strval($_POST['pollID']))){
+    if(isset($_POST['voteSubmit']) && !empty($_POST['pollID']) && preg_match("/^[0-9]+$/", strval($_POST['pollID']))>0){
         $voteData = array(
             'poll_id' => htmlspecialchars(strip_tags($_POST['pollID'])),
             'poll_option_id' => htmlspecialchars(strip_tags($_POST['voteOpt']))

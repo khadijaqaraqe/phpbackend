@@ -39,7 +39,7 @@ function cors() {
 $database = new Database();
 $db = $database->getConnection();
  
-$items = new Articles($db);
+$items = new DepartmentArticles($db);
  
 $data = json_decode(file_get_contents("php://input"));
 
