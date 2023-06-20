@@ -69,19 +69,26 @@
         //$items->ComplaintAssociation = $data->ComplaintAssociation;
         if ($data->fileSource) {
             foreach ($data->fileSource as $key => $value) {
+                
                 $image_parts = explode(";base64,", $value);
                 //echo $image_parts;
                 $image_type_aux = explode("image/", $image_parts[0]);
+                $pdf_type_aux = explode("application/", $image_parts[0]);
+                //application/pdf
                 //echo($image_type_aux[2]);
-                $image_type = $image_type_aux[1];
+
+                $image_type = isset($image_type_aux[1]) ? $image_type_aux[1] : null ;
+                $pdf_type =isset($pdf_type_aux[1]) ? $pdf_type_aux[1] : null ;
+               // echo $pdf_type;
                 $image_base64 = base64_decode($image_parts[1]);
-                $file_name = uniqid() . '.'.'jpeg';
+                $items->Type = $pdf_type === 'pdf' ? 'pdf' : 'jpeg';//$image_type_aux || $pdf_type_aux;
+                //echo $items->Type;
+                $file_name = uniqid() . '.'. $items->Type ;//'jpeg';
                 $file = $folderPath . $file_name;
                 $items->Path = "attachments/".$file_name; 
-                $items->Type = "image/jpeg";
-            
-                if( $image_type != "jpg" && $image_type != "png" && $image_type != "jpeg"  && $image_type != "gif" ) {
-                    echo json_encode(array("message" => "Sorry, only JPG, JPEG, PNG & GIF files are allowed."));
+                
+                if( $image_type != "jpg" && $image_type != "png" && $image_type != "jpeg"  && $image_type != "gif" && $pdf_type != "pdf") {
+                    echo json_encode(array("message" => "Sorry, only JPG, JPEG, PNG, PDF & GIF files are allowed."));
                 } else {
                     file_put_contents($file, $image_base64);
                     if ($items->createAttachments()){

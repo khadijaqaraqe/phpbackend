@@ -36,7 +36,9 @@ class Complaints{
 	}
 
 	function read(){	
-		$stmt = $this->conn->prepare("SELECT id, name, phone_number, topic, association, complaint_text, complaint_date, email, user_id FROM ".$this->complaintTable.";");		
+		$stmt = $this->conn->prepare("SELECT id, name, phone_number, topic, association, complaint_text, complaint_date, email, user_id 
+        FROM `".$this->complaintTable."`
+        ORDER BY `".$this->complaintTable."`.`complaint_date` DESC ;");		
 		$stmt->execute();			
 		$result = $stmt->get_result();		
 		return $result;	

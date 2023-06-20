@@ -15,6 +15,7 @@ class BreakNews {
     private $db      = false;
     private $newsTbl = 'news';
     private $articlesTbl = 'articles';
+    private $department_articlesTbl = 'department_articles';
     public function __construct(){
         if(!$this->db){ 
             // Connect to the database
@@ -62,8 +63,11 @@ class BreakNews {
             $sql = "SELECT `".$this->newsTbl."`.`id` AS ID,  `".$this->newsTbl."`.`text` AS Text, `".$this->newsTbl."`.`creator`, `".$this->newsTbl."`.`modified` as Modified,  `".$this->newsTbl."`.`created` as Created 
             FROM `".$this->newsTbl."`
             UNION 
-            SELECT `".$this->articlesTbl."`.`id` AS ID ,`".$this->articlesTbl."`.`title` AS Text,`".$this->articlesTbl."`.`creator`, `".$this->articlesTbl."`.`modified_date` as Modified , `".$this->articlesTbl."`.`created_date`as Created
+            SELECT `".$this->articlesTbl."`.`id` AS ID, `".$this->articlesTbl."`.`title` AS Text, `".$this->articlesTbl."`.`creator`, `".$this->articlesTbl."`.`modified_date` as Modified , `".$this->articlesTbl."`.`created_date`as Created
             FROM `".$this->articlesTbl."`
+            UNION 
+            SELECT `".$this->department_articlesTbl."`.`id` AS ID, `".$this->department_articlesTbl."`.`title` AS Text, `".$this->department_articlesTbl."`.`creator`, `".$this->department_articlesTbl."`.`modified_date` as Modified , `".$this->department_articlesTbl."`.`created_date`as Created
+            FROM `".$this->department_articlesTbl."`
             ORDER BY Modified DESC, Created DESC;";
             $newsResult = $this->getQuery($sql);
            /*  if(!empty($newsResult)){
@@ -91,7 +95,7 @@ class BreakNews {
      */
     public function getOneNews($data = array()) {
         
-        $sql = "SELECT * FROM `".$this->newsTbl."` WHERE `".$this->newsTbl."`.`id` = ".$data['id'].";";
+        $sql = "SELECT * FROM `".$this->newsTbl."` WHERE `".$this->newsTbl."`.`id` = '".$data['id']."';";
             //$sql = "SELECT * FROM `".$this->newsTbl."` ORDER BY `".$this->newsTbl."`.modified DESC, `".$this->newsTbl."`.created DESC;";
             $newsResult = $this->getQuery($sql);
            /*  if(!empty($newsResult)){
@@ -107,7 +111,9 @@ class BreakNews {
      */
     public function createNews($data = array()){
         try { 
-            $query = "INSERT INTO ".$this->newsTbl."(`text`, `creator`) VALUES ('".htmlspecialchars(strip_tags($data['Text']))."',".htmlspecialchars(strip_tags($data['Creator'])).");";
+            $uuid = "breaknews-".uniqid(date("Y").date("n").'0');
+           //$uuid = "breaknews-".uniqid(date("Y").date("n").'0');
+            $query = "INSERT INTO `".$this->newsTbl."` (`id`, `text`, `creator`) VALUES ('".$uuid."', '".htmlspecialchars(strip_tags($data['Text']))."', ".htmlspecialchars(strip_tags($data['Creator'])).");";
             $insert = $this->db->query($query);
             return true;
         } catch (mysqli_sql_exception $e) { 
@@ -121,7 +127,7 @@ class BreakNews {
      */
     public function updateNews($data = array()){
         try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
-           $query = "UPDATE ".$this->newsTbl." SET `text` =  '".htmlspecialchars(strip_tags($data['Text']))."' WHERE ".$this->newsTbl.".`id` = ".$data['id'].";";
+           $query = "UPDATE ".$this->newsTbl." SET `text` =  '".htmlspecialchars(strip_tags($data['Text']))."' WHERE ".$this->newsTbl.".`id` = '".$data['id']."';";
            $update = $this->db->query($query);
           
            return true;
@@ -135,7 +141,7 @@ class BreakNews {
 
    public function deleteNews($data = array()) {
         try { //$stmt = $this->conn->prepare("UPDATE `articles` SET `Title` = ?, `Text` = ? WHERE `articles`.`ID` = ?;");
-        $query = "DELETE FROM " .$this->newsTbl. " WHERE `".$this->newsTbl."`.`id` =".htmlspecialchars(strip_tags($data['id'])).";";
+        $query = "DELETE FROM " .$this->newsTbl. " WHERE `".$this->newsTbl."`.`id` ='".htmlspecialchars(strip_tags($data['id']))."';";
         $delete = $this->db->query($query);
         
         return true;

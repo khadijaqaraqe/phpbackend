@@ -178,7 +178,7 @@ class DepartmentArticles{
 			$this->category = htmlspecialchars(strip_tags($this->category));
 			$this->creator_id = htmlspecialchars(strip_tags($this->creator_id));
 			$this->department_id = intval(htmlspecialchars(strip_tags($this->department_id)));
-			$this->text = (strip_tags($this->text));
+			$this->text = (htmlspecialchars($this->text));
 			//$this->title = $this->title;
 
 			$stmt->bind_param("siissi", 
@@ -251,7 +251,7 @@ class DepartmentArticles{
 	 
 		$this->id = htmlspecialchars(strip_tags($this->id));
 		$this->title = htmlspecialchars(strip_tags($this->title));
-		$this->text = htmlspecialchars(strip_tags($this->text));
+		$this->text = htmlspecialchars($this->text);
 		
 		$stmt->bind_param("sss", $this->title, $this->text, $this->id);
 		

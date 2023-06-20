@@ -20,21 +20,48 @@ $result = $items->GetFirst25();
 if($result->num_rows > 0){    
     $itemRecords=array();
     $itemRecords["articles"]=array(); 
+   
+    $ImagesDetails["images"]= array();
 	 while ($item = $result->fetch_assoc()) { 	
         extract($item); 
 
         $itemDetails=array(
             "id" => $item['id'],
-            "firstName" => $item['first_name'],
-            "lastName" => $item['last_name'],
+            //"firstName" => $item['first_name'],
+            //"lastName" => $item['last_name'],
             "title" => $item['title'],
 			"text" => $item['text'],
-            "path" => $item['path'],
+            //"path" => $item['path'],
             //"image" => $item['image'],
-            "category" => $item['name'],            
+            //"category" => $item['name'],            
 			"created" => $item['created_date'],
-            "modified" => $item['modified_date']		
+            "modified" => $item['modified_date'],  
+            "images"=> array()	
+           		
         ); 
+        foreach ($item as $key => $value) {
+            // $idea = mysql_real_escape_string($value['id']);
+           $result2 = $items->getImages($value);
+
+            //b     $check = $idea->checkIdea($title);
+            //print_r($value);
+             if ($result2->num_rows > 0){
+                while ($item = $result2->fetch_assoc()) { 	
+                    extract($item); 
+                $ImagesItemDetails = array();
+               // array_push($ImagesItemDetails, $item['path']); //json_encode
+                //    "path" => $item['path'],
+                    //"category" => $item['name']            
+              //  ); 
+             array_push($itemDetails['images'], $item['path']);   
+            }
+               
+                } else {
+                 
+                }
+            }
+           // array_push($itemRecords, $itemDetails['images']);
+           
        array_push($itemRecords["articles"], $itemDetails);
     }    
    

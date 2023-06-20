@@ -3,7 +3,7 @@
   cors();
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-    include_once '../class/Directorates.php';
+    include_once '../class/Partners.php';
     
     $database = new Database();
 
@@ -33,7 +33,7 @@
       }
     }
     
-    $items = new Directorates($db);
+    $items = new Partners($db);
     $folderPath = dirname(__DIR__,2)."/attachments/";
     $postData = file_get_contents("php://input");
     
@@ -42,21 +42,13 @@
     $decoded_json = json_decode($people_json, false);
     
     $data = json_decode($postData);
-    $items->title = $data->title;
-    $items->text = $data->text;
+    $items->name = $data->name;
+    $items->minister = $data->minister;
     $items->description = $data->description;
-    $items->director = $data->director;
     $items->url = $data->url;
-    $items->phone_number1 = $data->phone_number1;
-    $items->fax_num = $data->fax_num;
     $items->facebook_url = $data->facebook_url;
     $items->instagram_url = $data->instagram_url;
-    $items->phone_number2 = $data->phone_number2;
-    $items->twitter_url = $data->twitter_url;
-    $items->linkedin_url = $data->linkedin_url;
-    $items->whatsapp_url = $data->whatsapp_url;
     $items->youtube_url  = $data->youtube_url;
-
     $items->image = $data->file;
    
   foreach ($data->fileSource as $key => $value) {
@@ -83,8 +75,8 @@
   }
   if($items->create()) {         
     http_response_code(200);          
-    echo json_encode(array("message" => "Directorate was created."));
+    echo json_encode(array("message" => "Partner was created."));
   } else {         
     http_response_code(503);        
-    echo json_encode(array("message" => "Unable to create Directorate."));
+    echo json_encode(array("message" => "Unable to create Partner."));
   } 

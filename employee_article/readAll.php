@@ -30,7 +30,6 @@ if($result->num_rows > 0){
             "title" => $item['title'],
 			"text" => $item['text'],
             "path" => $item['path'],
-           
             "category" => $item['name'],            
 			"created" => $item['created_date'],
             "modified" => $item['modified_date']		
