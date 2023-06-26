@@ -104,9 +104,9 @@ class Partners{
 	function create() {
 		$uuid = "partner-".uniqid();
         $this->id =  $uuid;
-        $this->name = htmlspecialchars($this->url);
-        $this->minister = htmlspecialchars($this->url);
-        $this->url = htmlspecialchars($this->description);
+        $this->name = htmlspecialchars($this->name);
+        $this->minister = htmlspecialchars($this->minister);
+        $this->url = htmlspecialchars($this->url);
         $this->description = htmlspecialchars($this->description);
 
 			$stmt = $this->conn->prepare("INSERT INTO `".$this->partnerTable."` 
@@ -155,14 +155,14 @@ class Partners{
 		
 	function update(){
 	
-        $this->id = htmlspecialchars(strip_tags($this->id));
-		$this->name = htmlspecialchars(strip_tags($this->name));
-        $this->url = htmlspecialchars($this->url);
-        $this->minister = htmlspecialchars($this->minister);
-        $this->description  = htmlspecialchars($this->description);
-        $this->facebook_url = htmlspecialchars($this->facebook_url);
-        $this->instagram_url = htmlspecialchars($this->instagram_url);
-        $this->youtube_url  = htmlspecialchars($this->youtube_url);
+        $this->id 				= htmlspecialchars(strip_tags($this->id));
+		$this->name 			= htmlspecialchars(strip_tags($this->name));
+        $this->url 				= htmlspecialchars($this->url);
+        $this->minister 		= htmlspecialchars($this->minister);
+        $this->description  	= htmlspecialchars($this->description);
+        $this->facebook_url 	= htmlspecialchars($this->facebook_url);
+        $this->instagram_url 	= htmlspecialchars($this->instagram_url);
+        $this->youtube_url  	= htmlspecialchars($this->youtube_url);
 		$stmt = $this->conn->prepare("UPDATE `".$this->partnerTable."` 
         SET `name` = ?, `url` = ?, `minister`= ?, `description`= ?,
         `facebook_url` = ?, `instagram_url`= ?, `youtube_url`= ?

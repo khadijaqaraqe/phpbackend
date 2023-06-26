@@ -118,21 +118,21 @@ class Directorates{
 						 
 	function create() {
 		$uuid = "directorate-".uniqid();
-        $this->id =  $uuid;
-        $this->title = htmlspecialchars(strip_tags($this->title));
-        $this->director = htmlspecialchars(strip_tags($this->director));
-        $this->url = htmlspecialchars($this->url);
-        $this->phone_number1 = htmlspecialchars($this->phone_number1);
-        $this->fax_num = htmlspecialchars($this->fax_num);
-        $this->facebook_url = htmlspecialchars($this->facebook_url);
-        $this->instagram_url = htmlspecialchars($this->instagram_url);
-        $this->phone_number2 = htmlspecialchars($this->phone_number2);
-        $this->twitter_url = htmlspecialchars($this->twitter_url);
-        $this->linkedin_url = htmlspecialchars($this->linkedin_url);
-        $this->whatsapp_url = htmlspecialchars($this->whatsapp_url);
-        $this->youtube_url  = htmlspecialchars($this->youtube_url);
-        $this->text = htmlspecialchars($this->text);
-        $this->description = htmlspecialchars($this->description);
+        $this->id               =   $uuid;
+        $this->title            =   htmlspecialchars(strip_tags($this->title));
+        $this->director         =   htmlspecialchars(strip_tags($this->director));
+        $this->url              =   htmlspecialchars($this->url);
+        $this->phone_number1    =   htmlspecialchars($this->phone_number1);
+        $this->fax_num          =   htmlspecialchars($this->fax_num);
+        $this->facebook_url     =   htmlspecialchars($this->facebook_url);
+        $this->instagram_url    =   htmlspecialchars($this->instagram_url);
+        $this->phone_number2    =   htmlspecialchars($this->phone_number2);
+        $this->twitter_url      =   htmlspecialchars($this->twitter_url);
+        $this->linkedin_url     =   htmlspecialchars($this->linkedin_url);
+        $this->whatsapp_url     =   htmlspecialchars($this->whatsapp_url);
+        $this->youtube_url      =   htmlspecialchars($this->youtube_url);
+        $this->text             =   htmlspecialchars($this->text);
+        $this->description      =   htmlspecialchars($this->description);
 
 			$stmt = $this->conn->prepare("INSERT INTO `".$this->directorateTable."` 
             (`id`, `title`, `director`, `url`, `phone_number1`, `fax_num`, `facebook_url`, `instagram_url`, 
