@@ -63,18 +63,24 @@ class Tourism {
     function readTourismTable($item) {
         if(str_contains($item, "places_to_visit") ) {
             $this->tourismTable = $this->places_to_visitTable;
-        } 
-        if(str_contains($item, "places_to_stay") ) {
-            $this->tourismTable = $this->places_to_stayTable;
-        }
-        if(str_contains($item, "tourism_reality") ) {
-            $this->tourismTable = $this->tourism_realityTable;
-        }
-        if(str_contains($item, "presents") ) {
-            $this->tourismTable = $this->presentsTable;
-        }
-        if(str_contains($item, "restaurants") ) {
-            $this->tourismTable = $this->restaurantsTable;
+        } else {
+            if(str_contains($item, "places_to_stay") ) {
+                $this->tourismTable = $this->places_to_stayTable;
+            } else {
+                if(str_contains($item, "tourism_reality") ) {
+                    $this->tourismTable = $this->tourism_realityTable;
+                } else {
+                    if(str_contains($item, "presents") ) {
+                        $this->tourismTable = $this->presentsTable;
+                    } else {
+                        if(str_contains($item, "restaurants") ) {
+                            $this->tourismTable = $this->restaurantsTable;
+                        } else {
+                            $this->tourismTable = $this->tourism_realityTable;
+                        }
+                    }
+                }
+            }
         }
     }
 	
@@ -103,8 +109,7 @@ class Tourism {
 			return $result;	
 		} else { 
 			return false;
-		}			
-			
+		}
 	}
 
     function readAll() {
@@ -146,6 +151,7 @@ class Tourism {
 			ORDER BY modified DESC, created DESC 
 			LIMIT 2000;");		
 		} else {
+
             $stmt = $this->conn->prepare("SELECT 
                 `".$this->tourismTable."`.`id` AS id,`".$this->tourismTable."`.`creator` AS creator,`".$this->tourismTable."`.`text` AS text,
                 `".$this->tourismTable."`.`created` AS created,`".$this->tourismTable."`.`modified` AS modified,`".$this->tourismTable."`.`title` AS title,
@@ -191,6 +197,7 @@ class Tourism {
 	}
 						 
 	function create($table) {
+
         $this->TourismTable($table);
 		$uuid = $this->tourismTable.'_'.uniqid();
         $this->id =  $uuid;
@@ -212,7 +219,9 @@ class Tourism {
             $this->title,
             $this->url
         ); 
+
         if($stmt->execute()===true) {
+        
             if(count($this->imagesID)> 0) {
                 $this->title = htmlspecialchars(strip_tags($this->title));
                 foreach($this->imagesID as $key => $value)
@@ -247,11 +256,9 @@ class Tourism {
 	function update() {
         $this->readTourismTable($this->id);
         $this->id =  htmlspecialchars(strip_tags($this->id));
-        $this->url = htmlspecialchars($this->url);
-        
+        $this->url = htmlspecialchars($this->url);        
         $this->text = htmlspecialchars($this->text);
         $this->title = htmlspecialchars($this->title);
-
       
 		$stmt = $this->conn->prepare("UPDATE `".$this->tourismTable."` 
         SET `title` = ?, `url` = ?, `text`= ?
@@ -267,7 +274,6 @@ class Tourism {
 		if($stmt->execute()){
 			return true;
 		}
-	 
 		return false;
 	}
 	
