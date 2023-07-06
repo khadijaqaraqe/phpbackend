@@ -2,7 +2,7 @@
  	cors();
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-	include_once '../class/EmpArticles.php';
+	include_once '../class/DepartmentArticles.php';
 	function cors() {
     
 		// Allow from any origin

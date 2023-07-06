@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Access-Contro
 
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/EmpArticles.php';
+include_once '../class/DepartmentArticles.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -24,17 +24,32 @@ if($result->num_rows > 0){
         extract($item); 
 
         $itemDetails=array(
-            "id" => $item['ID'],
-            "firstName" => $item['first_name'],
-            "lastName" => $item['last_name'],
+            "id" => $item['id'],
             "title" => $item['title'],
 			"text" => $item['text'],
-            "path" => $item['path'],
-            //"image" => $item['image'],
             "category" => $item['name'],            
 			"created" => $item['created_date'],
-            "modified" => $item['modified_date']		
+            "modified" => $item['modified_date']	,
+            "images"=> array()		
         ); 
+        foreach ($item as $key => $value) {
+           
+            $result2 = $items->getImages($value);
+ 
+            
+              if ($result2->num_rows > 0){
+                 while ($item = $result2->fetch_assoc()) { 	
+                     extract($item); 
+                 $ImagesItemDetails = array();
+                
+              array_push($itemDetails['images'], $item['path']);   
+             }
+                
+                 } else {
+                  
+                 }
+             }
+           
        array_push($itemRecords["articles"], $itemDetails);
     }    
    

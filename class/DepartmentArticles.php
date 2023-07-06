@@ -104,7 +104,7 @@ class DepartmentArticles{
 	}
 
 	function GetFirst25(){	
-		$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->typesTable."`.name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.type, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
+	/* 	$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->typesTable."`.name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.type, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
 		FROM `".$this->articlesTable."` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.article_id = `".$this->articlesTable."`.id LEFT JOIN Images ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id, `".$this->typesTable."`, `".$this->usersTable."`   
 		WHERE `".$this->articlesTable."`.department_id = `".$this->typesTable."`.id AND `".$this->articlesTable."`.creator = `".$this->usersTable."`.id 
 		
@@ -116,7 +116,13 @@ class DepartmentArticles{
 			"ii",
 			$this->FirstRow, 
 			$this->LastRow
-		);
+		); */
+
+		$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->typesTable."`.name
+			FROM `".$this->articlesTable."`, `".$this->typesTable."`
+			WHERE `".$this->articlesTable."`.department_id = `".$this->typesTable."`.id
+			ORDER BY `".$this->articlesTable."`.modified_date DESC, `".$this->articlesTable."`.created_date DESC 
+			LIMIT 25;");			
 		$stmt->execute();			
 		$result = $stmt->get_result();		
 		return $result;	

@@ -76,19 +76,24 @@ class EmployeesArticles{
 	}
 
 	function GetFirst25(){	
-		$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.`id`, `".$this->articlesTable."`.`title`, `".$this->articlesTable."`.text, `".$this->articlesTable."`.writer, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.type, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
+	/* 	$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.`id`, `".$this->articlesTable."`.`title`, `".$this->articlesTable."`.text, `".$this->articlesTable."`.writer, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date, `".$this->usersTable."`.first_name, `".$this->usersTable."`.last_name, `".$this->imagesTable."`.path, `".$this->imagesTable."`.type, `".$this->imagesTable."`.image, `".$this->imagesTable."`.created_date 
 		FROM `".$this->articlesTable."` LEFT JOIN `".$this->articleImagesTable."` ON `".$this->articleImagesTable."`.`article_id` = `".$this->articlesTable."`.id LEFT JOIN Images ON `".$this->articleImagesTable."`.image_id = `".$this->imagesTable."`.id,  `".$this->usersTable."`   
 		WHERE `".$this->articlesTable."`.creator = `".$this->usersTable."`.`id` 
 		
 		ORDER BY `".$this->articlesTable."`.`modified_date` DESC, `".$this->articlesTable."`.`created_date` DESC 
-		LIMIT ?, ?;");		
-		$this->FirstRow = htmlspecialchars(strip_tags($this->FirstRow));
+		LIMIT ?, ?;");	 */
+		$stmt = $this->conn->prepare("SELECT `".$this->articlesTable."`.id, `".$this->articlesTable."`.title, `".$this->articlesTable."`.text, 
+			`".$this->articlesTable."`.writer, `".$this->articlesTable."`.modified_date, `".$this->articlesTable."`.created_date
+			FROM `".$this->articlesTable."`
+			ORDER BY `".$this->articlesTable."`.modified_date DESC, `".$this->articlesTable."`.created_date DESC 
+			LIMIT 25;");		
+		/* $this->FirstRow = htmlspecialchars(strip_tags($this->FirstRow));
 		$this->LastRow = htmlspecialchars(strip_tags($this->LastRow));
 		$stmt->bind_param(
 			"ii",
 			$this->FirstRow, 
 			$this->LastRow
-		);
+		); */
 		$stmt->execute();			
 		$result = $stmt->get_result();		
 		return $result;	
