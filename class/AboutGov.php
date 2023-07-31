@@ -49,6 +49,21 @@ class AboutGov{
 		}			
 			
 	}
+    function readLastAdded(){
+		
+        $stmt = $this->conn->prepare("SELECT `id`, `text`, `modified`, `created`, `creator` 
+            FROM `".$this->govTable."`
+            ORDER BY `".$this->govTable."`.`modified` DESC LIMIT 1;");		
+				
+		if ($stmt->execute()) {
+			$result = $stmt->get_result();	
+			return $result;	
+		} else { 
+			return false;
+		}			
+			
+	}
+
     function getImages($item) {
         $stmt2 = $this->conn->prepare(" SELECT DISTINCT `".$this->attachmentTable."`.`path`, `".$this->attachmentTable."`.`type`, `".$this->attachmentTable."`.`description`, `".$this->attachmentTable."`.`created`
         FROM `".$this->attachmentTable."` LEFT JOIN `".$this->projectsAttachementTable."` ON `".$this->projectsAttachementTable."`.`attach_id` = `".$this->attachmentTable."`.`id`
@@ -82,7 +97,7 @@ class AboutGov{
         $uuid = "about-".uniqid();
         $this->id =  $uuid;
         $stmt = $this->conn->prepare("INSERT INTO ".$this->govTable." (`id`, `creator`, `text`, `created`, `modified`)
-        VALUES (?, ?, ?, NOW(), NOW(), ?);");
+        VALUES (?, ?, ?, NOW(), NOW());");
        
         $this->Text = htmlspecialchars(strip_tags($this->Text));
        

@@ -37,6 +37,21 @@ class Generalization{
 		return $result;	
 	} */
 
+    function readLastAdded(){
+		
+        $stmt = $this->conn->prepare("SELECT `id`, `text`, `title`, `modified`, `created`, `creator`  
+            FROM `".$this->generalizationTable."`
+            ORDER BY `".$this->generalizationTable."`.`modified` DESC LIMIT 1;");		
+				
+		if ($stmt->execute()) {
+			$result = $stmt->get_result();	
+			return $result;	
+		} else { 
+			return false;
+		}			
+			
+	}
+
     function read(){
 		//
 		if($this->id) {

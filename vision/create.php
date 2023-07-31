@@ -43,7 +43,7 @@
         $items->Text = $data->text;
         $items->Creator = $data->creator;
     
-        if ($data->fileSource) {
+        /* if ($data->fileSource) {
             foreach ($data->fileSource as $key => $value) {
                 
                 $image_parts = explode(";base64,", $value);
@@ -74,7 +74,7 @@
                     }
                 }
             }
-        }
+        } */
         if($items->create()) {         
             http_response_code(200);          
             echo json_encode(array("message" => "Item was added."));

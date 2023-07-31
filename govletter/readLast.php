@@ -1,26 +1,23 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+
 header("Access-Control-Allow-Headers: Access-Control-Allow-Headers,Access-Control-Allow-Origin, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/phpbackend/config/database.php';
-include_once '../class/AboutGov.php';
+include_once '../class/GovLetter.php';
 
 $database = new Database();
 $db = $database->getConnection();
  
-$items = new AboutGov($db);
+$items = new GovLetter($db);
 
+$result = $items->readLastAdded();
 
-$result = $items->read();
-
-if($result->num_rows > 0) {    
+if($result->num_rows > 0){    
     $itemRecords=array();
-    $itemRecords["about"]=array(); 
-	
-    while ($item = $result->fetch_assoc()) {
-
+    $itemRecords["letter"]=array(); 
+	 while ($item = $result->fetch_assoc()) { 	
         extract($item); 
 
         $itemDetails=array(
@@ -41,14 +38,15 @@ if($result->num_rows > 0) {
                 }
             } else { }
         }
-        array_push($itemRecords["about"], $itemDetails);
+       array_push($itemRecords["letter"], $itemDetails);
     }    
    
     echo json_encode($itemRecords);
     http_response_code(200);     
+    
 } else {     
     http_response_code(404);     
     echo json_encode(
-        array("message" => "No Item found.")
+        array("message" => "No word found.")
     );
-} 
+}

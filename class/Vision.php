@@ -27,7 +27,20 @@ class Vision{
 		$result = $stmt->get_result();		
 		return $result;	
 	}
-
+    function readLastAdded(){
+		
+        $stmt = $this->conn->prepare("SELECT `id`, `text`, `modified`, `created`, `creator` 
+            FROM `".$this->govTable."`
+            ORDER BY `".$this->govTable."`.`modified` DESC LIMIT 1;");		
+				
+		if ($stmt->execute()) {
+			$result = $stmt->get_result();	
+			return $result;	
+		} else { 
+			return false;
+		}			
+			
+	}
 
     function read(){
 		//
@@ -82,7 +95,7 @@ class Vision{
         $uuid = "vision-".uniqid();
         $this->id =  $uuid;
         $stmt = $this->conn->prepare("INSERT INTO ".$this->govTable." (`id`, `creator`, `text`, `created`, `modified`)
-        VALUES (?, ?, ?, NOW(), NOW(), ?);");
+        VALUES (?, ?, ?, NOW(), NOW());");
        
         $this->Text = htmlspecialchars(strip_tags($this->Text));
        
