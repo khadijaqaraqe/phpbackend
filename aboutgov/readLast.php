@@ -39,7 +39,7 @@ if($result->num_rows > 0){
             } else { }
         }
        array_push($itemRecords["about"], $itemDetails);
-    }    
+    }
    
     echo json_encode($itemRecords);
     http_response_code(200);     
